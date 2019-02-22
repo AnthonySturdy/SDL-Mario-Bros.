@@ -1,0 +1,3 @@
+﻿  Character.cpp
+c:\users\antho\documents\visual studio projects\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  AnthonySturdy_Engine_GEC.vcxproj -> C:\Users\antho\Documents\Visual Studio Projects\AnthonySturdy_Engine_GEC\Debug\AnthonySturdy_Engine_GEC.exe
