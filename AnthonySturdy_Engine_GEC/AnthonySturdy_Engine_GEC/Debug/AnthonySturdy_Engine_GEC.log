@@ -1,3 +1,4 @@
-﻿  Character.cpp
-c:\users\antho\documents\visual studio projects\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  AnthonySturdy_Engine_GEC.vcxproj -> C:\Users\antho\Documents\Visual Studio Projects\AnthonySturdy_Engine_GEC\Debug\AnthonySturdy_Engine_GEC.exe
+﻿  GameScreen_LevelEditor.cpp
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(104): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  AnthonySturdy_Engine_GEC.vcxproj -> C:\Users\Anthony Sturdy\Documents\GitHub\GEC_Mario_AnthonySturdy\AnthonySturdy_Engine_GEC\Debug\AnthonySturdy_Engine_GEC.exe
