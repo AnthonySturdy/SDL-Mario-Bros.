@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{24A8FF4C-B9A9-4336-B214-F227EC98B5C8}</ProjectGuid>
     <RootNamespace>AnthonySturdyEngineGEC</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,6 +127,7 @@
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreen_Level1.cpp" />
+    <ClCompile Include="GameScreen_LevelEditor.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="GameScreen_Level1.h" />
+    <ClInclude Include="GameScreen_LevelEditor.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Texture2D.h" />
   </ItemGroup>
