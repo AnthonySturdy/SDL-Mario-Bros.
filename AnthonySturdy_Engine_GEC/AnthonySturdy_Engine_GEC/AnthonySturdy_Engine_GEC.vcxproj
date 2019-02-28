@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Character_Koopa.cpp" />
     <ClCompile Include="Character_Luigi.cpp" />
     <ClCompile Include="Character_Mario.cpp" />
     <ClCompile Include="Collisions.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="GameScreen_Level1.cpp" />
     <ClCompile Include="GameScreen_LevelEditor.cpp" />
     <ClCompile Include="LevelMap.cpp" />
+    <ClCompile Include="PowBlock.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
@@ -139,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Character_Koopa.h" />
     <ClInclude Include="Character_Luigi.h" />
     <ClInclude Include="Character_Mario.h" />
     <ClInclude Include="Collisions.h" />
@@ -149,6 +152,7 @@
     <ClInclude Include="GameScreen_Level1.h" />
     <ClInclude Include="GameScreen_LevelEditor.h" />
     <ClInclude Include="LevelMap.h" />
+    <ClInclude Include="PowBlock.h" />
     <ClInclude Include="Texture2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

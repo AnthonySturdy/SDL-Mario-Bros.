@@ -1,6 +1,6 @@
 #include "Character_Luigi.h"
 
-Character_Luigi::Character_Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map) : Character(renderer, imagePath, startPosition, map) {
+Character_Luigi::Character_Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map) : Character(renderer, imagePath, startPosition, map, MOVEMENT_SPEED) {
 
 }
 

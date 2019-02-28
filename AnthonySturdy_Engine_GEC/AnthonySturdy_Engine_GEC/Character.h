@@ -18,6 +18,7 @@ protected:
 
 	FACING mFacingDirection;
 
+	float movementSpeed;
 	bool mMovingLeft;
 	bool mMovingRight;
 	bool mJumping;
@@ -25,17 +26,22 @@ protected:
 	float mJumpForce;
 	float mCollisionRadius;
 
+
 	virtual void MoveLeft(float deltaTime);
 	virtual void MoveRight(float deltaTime);
 	void Jump();
 	void AddGravity(float deltaTime);
 
+
 public:
-	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map);
+	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map, float _movementSpeed);
 	~Character();
 
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event e);
+
+	bool		IsJumping()						{ return mJumping; }
+	void CancelJump();
 
 	void		SetPosition(Vector2D newPos)	{ mPosition = newPos; }
 	Vector2D	GetPosition()					{ return mPosition; }

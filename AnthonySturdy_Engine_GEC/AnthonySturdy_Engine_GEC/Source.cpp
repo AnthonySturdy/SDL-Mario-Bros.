@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
 	if (InitSDL()) {
 		bool quit = false;
 
-		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL_EDITOR);
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);
 
 		gOldTime = SDL_GetTicks();
 

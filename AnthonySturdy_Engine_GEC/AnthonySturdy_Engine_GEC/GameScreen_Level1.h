@@ -8,8 +8,12 @@
 #include "Character_Mario.h"
 #include "Character_Luigi.h"
 #include "LevelMap.h"
+#include "PowBlock.h"
+#include "Character_Koopa.h"
 class Texture2D;
 class Character;
+
+#include <vector>
 
 class GameScreen_Level1 : public GameScreen {
 public:
@@ -19,10 +23,25 @@ public:
 	void Render();
 	void Update(float deltaTime, SDL_Event e);
 
+	void UpdatePowBlock();
+
+	void UpdateEnemies(float deltaTime, SDL_Event e);
+	void CreateKoopa(Vector2D position, FACING direction, float speed);
+
 private:
 	Texture2D* mbackgroundTexture;
 	Character* myCharacter;
 	LevelMap* mLevelMap;
+
+	std::vector<Character_Koopa*> mEnemies;
+
+	PowBlock* mPowBlock;
+	bool mScreenshake;
+	float mScreenshakeTime;
+	float mWobble;
+	float mBackgroundYPos;
+
+	void DoScreenshake();
 
 	bool SetUpLevel();
 	void SetLevelMap();

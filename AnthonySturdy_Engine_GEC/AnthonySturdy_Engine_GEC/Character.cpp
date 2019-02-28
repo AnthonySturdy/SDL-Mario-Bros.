@@ -1,7 +1,7 @@
 #include "Character.h"
 
 
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map) {
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map, float _movementSpeed) {
 	mRenderer = renderer;
 	mTexture = new Texture2D(renderer);
 	mTexture->LoadFromFile(imagePath);
@@ -10,6 +10,7 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	SetPosition(startPosition);
 	mFacingDirection = FACING_RIGHT;
 	SetCollisionRadius(15.0f);
+	movementSpeed = _movementSpeed;
 }
 
 Character::~Character() {
@@ -48,13 +49,17 @@ void Character::Update(float deltaTime, SDL_Event e) {
 	}
 }
 
+void Character::CancelJump() {
+	mJumping = false;
+}
+
 void Character::MoveLeft(float deltaTime) {
-	mPosition.x -= MOVEMENT_SPEED * deltaTime;
+	mPosition.x -= movementSpeed * deltaTime;
 	mFacingDirection = FACING_LEFT;
 }
 
 void Character::MoveRight(float deltaTime) {
-	mPosition.x += MOVEMENT_SPEED * deltaTime;
+	mPosition.x += movementSpeed * deltaTime;
 	mFacingDirection = FACING_RIGHT;
 }
 
