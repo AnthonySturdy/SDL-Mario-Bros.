@@ -128,24 +128,29 @@ void GameScreen_Level1::UpdateEnemies(float deltaTime, SDL_Event e) {
 				//Is enemy off screen to left or right?
 				if (mEnemies[i]->GetPosition().x < (float)(-mEnemies[i]->GetCollisionBox().w*0.5f) ||
 					mEnemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(mEnemies[i]->GetCollisionBox().w*0.55f)) {
-					//mEnemies[i].SetAlive(false);
+					mEnemies[i]->SetAlive(false);
 				}
 			}
 
 			mEnemies[i]->Update(deltaTime, e);
-
+			
 			if ((mEnemies[i]->GetPosition().y > 300.0f || mEnemies[i]->GetPosition().y <= 64.0f) &&
 				(mEnemies[i]->GetPosition().x < 64.0f || mEnemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f)) {
 				//Disable collisions if behind a pipe
 			} else {
 				if (Collisions::Instance()->Circle(mEnemies[i]->GetCollisionCircle(), myCharacter->GetCollisionCircle())) {
-					//myCharacter.SetState(CHARACTERSTATE_PLAYER_DEATH);
+					//Check to see if enemy is colliding with player
+					if (mEnemies[i]->GetIsInjured()) {
+						mEnemies[i]->SetAlive(false);
+					} else {
+						//myCharacter.SetState(CHARACTERSTATE_PLAYER_DEATH);
+					}
 				}
 			}
 
-			//if (!mEnemies[i].GetAlive()) {
-			//	enemyIndexToDelete = i;
-			//}
+			if (!mEnemies[i]->GetAlive()) {
+				enemyIndexToDelete = i;
+			}
 		}
 
 		if (enemyIndexToDelete != -1) {

@@ -8,6 +8,10 @@
 #include"Texture2D.h"
 #include"GameScreenManager.h"
 
+//TODO: Player Death (Need to add it in the main level too)
+//		Music/Audio
+//		Additional work tutorial 11 - Section 2 onwards
+
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 GameScreenManager* gameScreenManager;

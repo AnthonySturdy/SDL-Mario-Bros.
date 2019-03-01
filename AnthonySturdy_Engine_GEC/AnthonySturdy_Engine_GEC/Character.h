@@ -26,7 +26,6 @@ protected:
 	float mJumpForce;
 	float mCollisionRadius;
 
-
 	virtual void MoveLeft(float deltaTime);
 	virtual void MoveRight(float deltaTime);
 	void Jump();

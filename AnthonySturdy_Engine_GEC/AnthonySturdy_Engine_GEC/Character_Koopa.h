@@ -12,6 +12,11 @@ public:
 	void TakeDamage();
 	void Jump();
 
+	bool GetAlive() { return isAlive; }
+	void SetAlive(bool alive) { isAlive = alive; }
+
+	bool GetIsInjured() { return mInjured; }
+
 private:
 	float mSingleSpriteWidth;
 	float mSingleSpriteHeight;
@@ -20,6 +25,8 @@ private:
 
 	bool mInjured;
 	float mInjuredTime;
+
+	bool isAlive;
 
 	void FlipRightWayUp();
 };

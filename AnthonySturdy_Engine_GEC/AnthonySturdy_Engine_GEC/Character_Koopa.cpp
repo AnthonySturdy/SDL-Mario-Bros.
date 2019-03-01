@@ -6,6 +6,7 @@ Character_Koopa::Character_Koopa(SDL_Renderer* renderer, std::string imagePath, 
 	mPosition = startPosition;
 
 	mInjured = false;
+	isAlive = true;
 
 	mSingleSpriteWidth = mTexture->GetWidth()/2;
 	mSingleSpriteHeight = mTexture->GetHeight();
