@@ -34,6 +34,7 @@ private:
 	LevelMap* mLevelMap;
 
 	std::vector<Character_Koopa*> mEnemies;
+	float mEnemySpawnCountdown = 0;
 
 	PowBlock* mPowBlock;
 	bool mScreenshake;

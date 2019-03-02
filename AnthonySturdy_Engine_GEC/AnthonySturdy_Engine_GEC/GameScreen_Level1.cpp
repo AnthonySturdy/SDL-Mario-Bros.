@@ -5,7 +5,9 @@
 
 GameScreen_Level1::GameScreen_Level1(SDL_Renderer* renderer) : GameScreen(renderer) {
 	SetUpLevel();
-	mLevelMap = NULL;
+	//mLevelMap = NULL;
+
+	mEnemySpawnCountdown = KOOPA_SPAWN_DELAY;
 }
 
 GameScreen_Level1::~GameScreen_Level1() {
@@ -17,6 +19,8 @@ GameScreen_Level1::~GameScreen_Level1() {
 
 	delete mPowBlock;
 	mPowBlock = NULL;
+
+	mLevelMap = NULL;
 
 	mEnemies.clear();
 }
@@ -42,12 +46,12 @@ bool GameScreen_Level1::SetUpLevel() {
 
 	myCharacter = new Character_Mario(mRenderer, "Images/Mario.png", Vector2D(200, 0), mLevelMap);
 
+	CreateKoopa(Vector2D(150, 32), FACING_RIGHT, KOOPA_SPEED);
+	CreateKoopa(Vector2D(325, 32), FACING_LEFT, KOOPA_SPEED);
+
 	mPowBlock = new PowBlock(mRenderer, mLevelMap);
 	mScreenshake = false;
 	mBackgroundYPos = 0.0f;
-
-	CreateKoopa(Vector2D(150, 32), FACING_RIGHT, KOOPA_SPEED);
-	CreateKoopa(Vector2D(325, 32), FACING_LEFT, KOOPA_SPEED);
 
 	return true;
 }
@@ -104,6 +108,13 @@ void GameScreen_Level1::Update(float deltaTime, SDL_Event e) {
 
 	UpdatePowBlock();
 
+	mEnemySpawnCountdown -= deltaTime;
+	if (mEnemySpawnCountdown <= 0) {
+		CreateKoopa(Vector2D(150, 32), FACING_RIGHT, KOOPA_SPEED);
+		CreateKoopa(Vector2D(325, 32), FACING_LEFT, KOOPA_SPEED);
+
+		mEnemySpawnCountdown = KOOPA_SPAWN_DELAY;
+	}
 	UpdateEnemies(deltaTime, e);
 }
 

@@ -138,6 +138,7 @@
     <Library Include="SDL\SDL2.lib" />
     <Library Include="SDL\SDL2main.lib" />
     <Library Include="SDL\SDL2_image.lib" />
+    <Library Include="SDL\SDL2_mixer.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
