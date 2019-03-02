@@ -1,0 +1,25 @@
+﻿  Character.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Character_Koopa.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Character_Luigi.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Character_Mario.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Collisions.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreen.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreenManager.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreenmanager.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreen_Level1.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_level1.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GameScreen_LevelEditor.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  PowBlock.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\powblock.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Source.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\source.cpp(1): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Texture2D.cpp
+c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\texture2d.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Generating Code...
