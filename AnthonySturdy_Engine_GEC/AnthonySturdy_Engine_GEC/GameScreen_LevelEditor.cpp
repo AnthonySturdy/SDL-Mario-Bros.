@@ -1,7 +1,6 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	- Add more Sprites
-//			- Add sprite selection
+// TODO:	- Add sprite selection / UI
 //			- Make maps playable
 
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
@@ -12,26 +11,24 @@ GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapS
 }
 
 GameScreen_LevelEditor::~GameScreen_LevelEditor() {
-
+	for (int i = 0; i < tileset.size(); i++) {
+		delete tileset[i];
+		delete tileset_cursor[i];
+	}
 }
 
 bool GameScreen_LevelEditor::SetUpLevel() {
-	texture = new Texture2D(mRenderer);
-	texture->LoadFromFile("Images/testTile.png");
+	texture_tileset = new Texture2D(mRenderer);
+	texture_tileset->LoadFromFile("Images/tileset.png");
 
-	texture2 = new Texture2D(mRenderer);
-	texture2->LoadFromFile("Images/Mario.png");
+	texture_tileset_cursor = new Texture2D(mRenderer);
+	texture_tileset_cursor->LoadFromFile("Images/tileset_cursor.png");
 
-	for (int i = 0; i < 2; i++) {
-		std::stringstream ss;
-		ss << "Images/Spritesheet/" << i << ".png";
-		spritesheet.push_back(new Texture2D(mRenderer));
-		spritesheet[i]->LoadFromFile(ss.str().c_str());
-
-		std::stringstream ss_1;
-		ss_1 << "Images/Spritesheet_Cursor/" << i << ".png";
-		spritesheet_cursor.push_back(new Texture2D(mRenderer));
-		spritesheet_cursor[i]->LoadFromFile(ss_1.str().c_str());
+	//Load each texture source Rect into vector
+	for (int y = 0; y < (texture_tileset->GetHeight() / TILE_SIZE); y++) {
+		for (int x = 0; x < (texture_tileset->GetWidth() / TILE_SIZE); x++) {
+			tileset.push_back(new Rect2D(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+		}
 	}
 
 	//Create map
@@ -119,6 +116,7 @@ void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 	}
 }
 
+//TODO: Get rid of this function, which is just a middle man for the RenderCursorSprite function for no reason
 void GameScreen_LevelEditor::DrawCursor(unsigned short sprite, int x, int y) {
 	RenderCursorSprite(sprite, x, y);
 }
@@ -145,12 +143,19 @@ void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 }
 
 void GameScreen_LevelEditor::RenderMapSprite(unsigned short sprite, int x, int y) {
-	if(sprite != SPRITE_CLEAR)
-		spritesheet[sprite]->Render(Vector2D(x, y), SDL_FLIP_NONE);
+	if (sprite != SPRITE_CLEAR) {
+		SDL_Rect source = { tileset[sprite]->x, tileset[sprite]->y, tileset[sprite]->w, tileset[sprite]->h };
+		SDL_Rect dest = { x, y, tileset[sprite]->w, tileset[sprite]->h };
+
+		texture_tileset->Render(source, dest, SDL_FLIP_NONE);
+	}
 }
 
 void GameScreen_LevelEditor::RenderCursorSprite(unsigned short sprite, int x, int y) {
-	spritesheet_cursor[sprite]->Render(Vector2D(x, y), SDL_FLIP_NONE);
+	SDL_Rect source = { tileset[sprite]->x, tileset[sprite]->y, tileset[sprite]->w, tileset[sprite]->h };
+	SDL_Rect dest = { x, y, tileset[sprite]->w, tileset[sprite]->h };
+
+	texture_tileset_cursor->Render(source, dest, SDL_FLIP_NONE);
 }
 
 void GameScreen_LevelEditor::ScreenToWorld(int screenPosX, int screenPosY, int &x, int &y) {

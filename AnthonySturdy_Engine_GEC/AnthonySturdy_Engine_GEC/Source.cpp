@@ -31,7 +31,7 @@ int main(int argc, char* args[]) {
 	if (InitSDL()) {
 		bool quit = false;
 
-		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL_EDITOR);
 
 		gOldTime = SDL_GetTicks();
 
@@ -69,7 +69,7 @@ bool InitSDL() {
 									SDL_WINDOWPOS_UNDEFINED,
 									SDL_WINDOWPOS_UNDEFINED,
 									SCREEN_WIDTH,
-									SCREEN_WIDTH,
+									SCREEN_HEIGHT,
 									SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			std::cout << "Window was not created. Error: " << SDL_GetError() << std::endl;
@@ -87,7 +87,8 @@ bool InitSDL() {
 			}
 
 			//Scale screen up for pixel effect
-			//TODO: Multiply WIDTH and HEIGHT in window create * 2. Uncomment line of code below.
+			//TODO: Divide WIDTH and HEIGHT in window create / 2. Uncomment line of code below.
+			//		Will also need to change cursor alignment in level editor
 			//SDL_RenderSetScale(gRenderer, 2.0f, 2.0f);
 
 		} else {

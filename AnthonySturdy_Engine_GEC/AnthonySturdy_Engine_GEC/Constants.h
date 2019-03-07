@@ -12,7 +12,7 @@
 //World values
 #define		MAP_WIDTH					16
 #define		MAP_HEIGHT					13
-#define		TILE_SIZE					32
+#define		TILE_SIZE					16
 #define		GRAVITY_SPEED				250.0f
 
 #define		SCREENSHAKE_DURATION		0.25f
