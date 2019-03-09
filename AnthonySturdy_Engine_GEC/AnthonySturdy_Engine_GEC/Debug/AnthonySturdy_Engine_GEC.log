@@ -1,15 +1,15 @@
 ﻿  GameScreenManager.cpp
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\character.h(50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   GameScreen_LevelEditor.cpp
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(14): warning C4018: '<': signed/unsigned mismatch
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(147): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(147): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(148): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(148): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(155): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(155): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(156): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-c:\users\antho\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(156): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(14): warning C4018: '<': signed/unsigned mismatch
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(147): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(147): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(148): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(148): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(155): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(155): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(156): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\gamescreen_leveleditor.cpp(156): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   Generating Code...
-  AnthonySturdy_Engine_GEC.vcxproj -> C:\Users\antho\Documents\GitHub\GEC_Mario_AnthonySturdy\AnthonySturdy_Engine_GEC\Debug\AnthonySturdy_Engine_GEC.exe
+  AnthonySturdy_Engine_GEC.vcxproj -> C:\Users\Anthony Sturdy\Documents\GitHub\GEC_Mario_AnthonySturdy\AnthonySturdy_Engine_GEC\Debug\AnthonySturdy_Engine_GEC.exe
