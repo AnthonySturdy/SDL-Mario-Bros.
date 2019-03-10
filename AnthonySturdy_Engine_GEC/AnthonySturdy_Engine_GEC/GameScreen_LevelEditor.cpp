@@ -1,6 +1,6 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	- Add sprite selection / UI
+// TODO:	- Add sprite selection / UI - Need to find way to pass sprite into function pointer but keep UI element class abstract.
 //			- Make maps playable
 
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
@@ -65,6 +65,9 @@ void GameScreen_LevelEditor::Render() {
 	//Draw Cursor
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
+	mouseX /= SCREEN_SCALE;
+	mouseY /= SCREEN_SCALE;
+
 	int wX, wY;
 	ScreenToWorld(mouseX, mouseY, wX, wY);
 	DrawCursor(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
@@ -73,6 +76,9 @@ void GameScreen_LevelEditor::Render() {
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
+
+	mouseX /= SCREEN_SCALE;
+	mouseY /= SCREEN_SCALE;
 	
 	int worldMouseX, worldMouseY;
 	ScreenToWorld(mouseX, mouseY, worldMouseX, worldMouseY);
@@ -92,25 +98,25 @@ void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 			map[y * mapSizeX + x] = sprite;
 		}
 		if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
-			//Middle mouse down
+			//Left mouse down
 			leftMouseDown = true;
 			map[y * mapSizeX + x] = sprite;
 		} else {
-			//Middle mouse up
+			//Left mouse up
 			leftMouseDown = false;
 		}
 
 		//Erasing tiles
 		if (rightMouseDown) {
-			//Left mouse held
+			//Right mouse held
 			map[y * mapSizeX + x] = SPRITE_CLEAR;
 		}
 		if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3)) { 
-			//Middle mouse down
+			//Right mouse down
 			rightMouseDown = true;
 			map[y * mapSizeX + x] = SPRITE_CLEAR;
 		} else {
-			//Middle mouse up
+			//Right mouse up
 			rightMouseDown = false;
 		}
 	}
@@ -124,8 +130,8 @@ void GameScreen_LevelEditor::DrawCursor(unsigned short sprite, int x, int y) {
 void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 	if (middleMouseDown) {
 		//Middle mouse held
-		cameraOffsetX -= (mX - startPanX) * 0.001f;
-		cameraOffsetY -= (mY - startPanY) * 0.001f;
+		cameraOffsetX -= (mX - startPanX) * 0.004f;
+		cameraOffsetY -= (mY - startPanY) * 0.004f;
 
 		startPanX = mX;
 		startPanY = mY;
@@ -159,8 +165,8 @@ void GameScreen_LevelEditor::RenderCursorSprite(unsigned short sprite, int x, in
 }
 
 void GameScreen_LevelEditor::ScreenToWorld(int screenPosX, int screenPosY, int &x, int &y) {
-	x = (int)((screenPosX + (cameraOffsetX*1000)) / TILE_SIZE);
-	y = (int)((screenPosY + (cameraOffsetY*1000)) / TILE_SIZE);
+	x = (int)((screenPosX + (cameraOffsetX*250)) / TILE_SIZE);
+	y = (int)((screenPosY + (cameraOffsetY*250)) / TILE_SIZE);
 }
 
 void GameScreen_LevelEditor::WorldToScreen(int worldPosX, int worldPosY, int &x, int &y) {

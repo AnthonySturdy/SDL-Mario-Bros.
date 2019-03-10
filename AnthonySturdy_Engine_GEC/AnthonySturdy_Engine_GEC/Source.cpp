@@ -68,8 +68,8 @@ bool InitSDL() {
 		gWindow = SDL_CreateWindow("Anthony Sturdy Engine - GEC",
 									SDL_WINDOWPOS_UNDEFINED,
 									SDL_WINDOWPOS_UNDEFINED,
-									SCREEN_WIDTH,
-									SCREEN_HEIGHT,
+									SCREEN_WIDTH * SCREEN_SCALE,
+									SCREEN_HEIGHT * SCREEN_SCALE,
 									SDL_WINDOW_SHOWN);
 		if (gWindow == NULL) {
 			std::cout << "Window was not created. Error: " << SDL_GetError() << std::endl;
@@ -87,9 +87,9 @@ bool InitSDL() {
 			}
 
 			//Scale screen up for pixel effect
-			//TODO: Divide WIDTH and HEIGHT in window create / 2. Uncomment line of code below.
-			//		Will also need to change cursor alignment in level editor
-			//SDL_RenderSetScale(gRenderer, 2.0f, 2.0f);
+			//Divide WIDTH and HEIGHT in window create / 2. Uncomment line of code below.
+			//To avoid mouse position weirdness, divide every mouse pos by SCREEN_SCALE
+			SDL_RenderSetScale(gRenderer, SCREEN_SCALE, SCREEN_SCALE);
 
 		} else {
 			std::cout << "Renderer could not intitialise. Error: " << SDL_GetError() << std::endl;

@@ -54,6 +54,9 @@
     <ClCompile Include="Character_Koopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib" />
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Character_Koopa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

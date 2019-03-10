@@ -3,6 +3,7 @@
 //Screen dimensions
 #define		SCREEN_WIDTH				512
 #define		SCREEN_HEIGHT				416
+#define		SCREEN_SCALE				2
 
 //Player movement values
 #define		MOVEMENT_SPEED				220.0f

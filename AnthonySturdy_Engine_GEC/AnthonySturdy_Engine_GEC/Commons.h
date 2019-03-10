@@ -17,6 +17,10 @@ struct Vector2D {
 struct Rect2D {
 	float x, y, w, h;
 
+	Rect2D() {
+		x = y = w = h = 0.0f;
+	}
+
 	Rect2D(float _x, float _y, float _w, float _h) {
 		x = _x;
 		y = _y;

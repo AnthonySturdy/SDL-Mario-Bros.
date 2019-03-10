@@ -70,7 +70,7 @@ private:
 		SPRITE_CLOUD_BOTTOM_MIDDLE = 694,
 		SPRITE_CLOUD_BOTTOM_RIGHT = 695
 	};
-	unsigned short currentSprite = SPRITE_CLOUD_BOTTOM_RIGHT;		//Current sprite being drawn
+	unsigned short currentSprite = SPRITE_GROUND;		//Current sprite being drawn
 	void EditMap(unsigned short sprite, int x, int y);				//Edit map array
 	void DrawCursor(unsigned short sprite, int x, int y);
 
