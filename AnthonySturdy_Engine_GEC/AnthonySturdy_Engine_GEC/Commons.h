@@ -21,6 +21,13 @@ struct Rect2D {
 		x = y = w = h = 0.0f;
 	}
 
+	Rect2D(int _x, int _y) {
+		//Used for UI elements where w and h are defined after
+		x = _x;
+		y = _y;
+		w = h = 0;
+	}
+
 	Rect2D(float _x, float _y, float _w, float _h) {
 		x = _x;
 		y = _y;

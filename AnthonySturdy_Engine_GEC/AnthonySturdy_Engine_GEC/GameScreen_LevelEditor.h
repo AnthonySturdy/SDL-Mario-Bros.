@@ -5,6 +5,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Texture2D.h"
+#include "UIElement.h"
 
 #include <vector>
 #include <iostream>
@@ -78,7 +79,6 @@ private:
 	Texture2D* texture_tileset;
 	Texture2D* texture_tileset_cursor;
 	std::vector<Rect2D*> tileset;
-	std::vector<Rect2D*> tileset_cursor;
 
 	//Camera Panning
 	void CameraPanning(int mX, int mY);
@@ -89,4 +89,10 @@ private:
 	bool leftMouseDown = false;
 	bool middleMouseDown = false;
 	bool rightMouseDown = false;
+
+	//UI
+	Texture2D* textureSpriteSelectBackground;
+
+	UIElement* uiSpriteSelectBackground;
+	UIElement* uiSpritePick0;
 };

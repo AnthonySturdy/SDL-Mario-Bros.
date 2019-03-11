@@ -1,7 +1,6 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	- Add sprite selection / UI - Need to find way to pass sprite into function pointer but keep UI element class abstract.
-//			- Make maps playable
+// TODO:	- Sprite selection. Either clickable (https://www.dreamincode.net/forums/topic/175010-creating-buttonsmenus-in-sdl/) or a menu type system using WASD/ArrowKeys
 
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
 	mapSizeX = _mapSizeX;
@@ -13,11 +12,18 @@ GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapS
 GameScreen_LevelEditor::~GameScreen_LevelEditor() {
 	for (int i = 0; i < tileset.size(); i++) {
 		delete tileset[i];
-		delete tileset_cursor[i];
 	}
+
+	delete texture_tileset;
+	delete texture_tileset_cursor;
+
+	delete textureSpriteSelectBackground;
+	delete uiSpriteSelectBackground;
+	delete uiSpritePick0;
 }
 
 bool GameScreen_LevelEditor::SetUpLevel() {
+	//Load tileset textures
 	texture_tileset = new Texture2D(mRenderer);
 	texture_tileset->LoadFromFile("Images/tileset.png");
 
@@ -35,6 +41,13 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	for (int i = 0; i < mapSizeX * mapSizeY; i++) {
 		map.push_back(SPRITE_CLEAR);
 	}
+
+	//Load UI textures
+	textureSpriteSelectBackground = new Texture2D(mRenderer);
+	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
+
+	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 210), nullptr);
+	uiSpritePick0 = new UIElement(texture_tileset, Rect2D(10, 15, TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[1]);
 
 	return false;
 }
@@ -71,6 +84,10 @@ void GameScreen_LevelEditor::Render() {
 	int wX, wY;
 	ScreenToWorld(mouseX, mouseY, wX, wY);
 	DrawCursor(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
+
+	//UI
+	uiSpriteSelectBackground->Render();
+	uiSpritePick0->Render();
 }
 
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
@@ -122,7 +139,7 @@ void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 	}
 }
 
-//TODO: Get rid of this function, which is just a middle man for the RenderCursorSprite function for no reason
+//TODO: Get rid of this function, which is just a middle-man for the RenderCursorSprite function for no reason
 void GameScreen_LevelEditor::DrawCursor(unsigned short sprite, int x, int y) {
 	RenderCursorSprite(sprite, x, y);
 }
