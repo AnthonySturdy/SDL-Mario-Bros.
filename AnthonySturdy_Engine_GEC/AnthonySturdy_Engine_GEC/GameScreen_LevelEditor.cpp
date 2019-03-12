@@ -1,6 +1,6 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	- Sprite selection. Either clickable (https://www.dreamincode.net/forums/topic/175010-creating-buttonsmenus-in-sdl/) or a menu type system using WASD/ArrowKeys
+// TODO:	
 
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
 	mapSizeX = _mapSizeX;
@@ -19,7 +19,9 @@ GameScreen_LevelEditor::~GameScreen_LevelEditor() {
 
 	delete textureSpriteSelectBackground;
 	delete uiSpriteSelectBackground;
-	delete uiSpritePick0;
+	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
+		delete uiSpriteSelectButtons[i];
+	}
 }
 
 bool GameScreen_LevelEditor::SetUpLevel() {
@@ -45,9 +47,192 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	//Load UI textures
 	textureSpriteSelectBackground = new Texture2D(mRenderer);
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
+	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 230), nullptr);
 
-	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 210), nullptr);
-	uiSpritePick0 = new UIElement(texture_tileset, Rect2D(10, 15, TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[1]);
+	//TODO: Might be a better way of doing this rather than hard-coding it.
+#pragma region UI_Buttons
+	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them
+
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_GROUND]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_GROUND);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BRICK_WHITE_TOP]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BRICK_WHITE_TOP);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BRICK]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BRICK);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BEZEL]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BEZEL);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_QUESTION_BLOCK]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_QUESTION_BLOCK);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_QUESTION_BLOCK_USED]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_QUESTION_BLOCK_USED);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_DOOR_ARCH]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_DOOR_ARCH);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_BRICKS]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_BRICKS);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_BATTLEMENT_EMPTY]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_BATTLEMENT_EMPTY);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_BATTLEMENT_FULL]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_BATTLEMENT_FULL);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_WINDOW_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_WINDOW_RIGHT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_WINDOW_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_WINDOW_LEFT);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CASTLE_DOOR_BLACK]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CASTLE_DOOR_BLACK);
+	xOff++;
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_OPENING_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_OPENING_LEFT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_OPENING_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_OPENING_RIGHT);
+	xOff = 0;
+	yOff++;
+	xOff++;
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_BASE_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_BASE_LEFT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_BASE_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_BASE_RIGHT);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_HORIZONTAL_OPENING_TOP]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_HORIZONTAL_OPENING_TOP);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_HORIZONTAL_BASE_TOP]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_HORIZONTAL_BASE_TOP);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_BASE_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_HORIZONTAL_OPENING_BOTTOM]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_HORIZONTAL_OPENING_BOTTOM);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_HORIZONTAL_BASE_BOTTOM]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_HORIZONTAL_BASE_BOTTOM);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_BOTTOM]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_BOTTOM);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_PIPE_VERTICAL_BASE_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP);
+	//Re position these +161pixels left
+	xOff = 0;
+	yOff = 0;
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_TOP]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_TOP);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_SMALL_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_SMALL_LEFT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_SMALL_MIDDLE]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_SMALL_MIDDLE);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_SMALL_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_SMALL_RIGHT);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_LEFT_SLOPE]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_LEFT_SLOPE);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_FULL]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_FULL);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_RIGHT_SLOPE]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_RIGHT_SLOPE);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_TOP_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_TOP_LEFT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_TOP_MIDDLE]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_TOP_MIDDLE);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_TOP_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_TOP_RIGHT);
+	xOff = 0;
+	yOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_LEFT_SPOTS]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_LEFT_SPOTS);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_FULL]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_FULL);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_BUSH_LARGE_RIGHT_SPOTS]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_BUSH_LARGE_RIGHT_SPOTS);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_BOTTOM_LEFT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_BOTTOM_LEFT);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_BOTTOM_MIDDLE]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_BOTTOM_MIDDLE);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_BOTTOM_RIGHT]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_BOTTOM_RIGHT);
+
+
+
+#pragma endregion
 
 	return false;
 }
@@ -83,11 +268,20 @@ void GameScreen_LevelEditor::Render() {
 
 	int wX, wY;
 	ScreenToWorld(mouseX, mouseY, wX, wY);
-	DrawCursor(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
+	if (wX >= 0 && wY >= 0 && wX < mapSizeX && wY < mapSizeY) {
+		DrawCursor(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
+	}
 
 	//UI
 	uiSpriteSelectBackground->Render();
-	uiSpritePick0->Render();
+
+	SDL_SetRenderDrawColor(mRenderer, 255, 20, 20, 255);
+	SDL_RenderFillRect(mRenderer, &curSpriteHighlight);
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+
+	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
+		uiSpriteSelectButtons[i]->Render();
+	}
 }
 
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
@@ -102,6 +296,27 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 
 	EditMap(currentSprite, worldMouseX, worldMouseY);
 	CameraPanning(mouseX, mouseY);
+
+	for (int i = 0; i < spriteSelectButtonRects.size(); i++) {
+		Rect2D r = spriteSelectButtonRects[i];
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		x /= SCREEN_SCALE;
+		y /= SCREEN_SCALE;
+
+		//If user hovering over sprite
+		if ((x > r.x) && (x < r.x + r.w) && (y > r.y) && (y < r.y + r.h)) {
+			std::cout << "Hovering index " << i << std::endl;
+
+			if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
+				//Left mouse down
+				std::cout << "Sprite changing to: " << spriteSelectButtonSprites[i] << std::endl;
+				currentSprite = spriteSelectButtonSprites[i];
+				curSpriteHighlight.x = r.x - 1;
+				curSpriteHighlight.y = r.y - 1;
+			}
+		}
+	}
 }
 
 void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
@@ -147,8 +362,8 @@ void GameScreen_LevelEditor::DrawCursor(unsigned short sprite, int x, int y) {
 void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 	if (middleMouseDown) {
 		//Middle mouse held
-		cameraOffsetX -= (mX - startPanX) * 0.004f;
-		cameraOffsetY -= (mY - startPanY) * 0.004f;
+		cameraOffsetX -= (mX - startPanX) * 0.005f;
+		cameraOffsetY -= (mY - startPanY) * 0.005f;
 
 		startPanX = mX;
 		startPanY = mY;
@@ -182,8 +397,8 @@ void GameScreen_LevelEditor::RenderCursorSprite(unsigned short sprite, int x, in
 }
 
 void GameScreen_LevelEditor::ScreenToWorld(int screenPosX, int screenPosY, int &x, int &y) {
-	x = (int)((screenPosX + (cameraOffsetX*250)) / TILE_SIZE);
-	y = (int)((screenPosY + (cameraOffsetY*250)) / TILE_SIZE);
+	x = (int)((screenPosX + (cameraOffsetX*255)) / TILE_SIZE);
+	y = (int)((screenPosY + (cameraOffsetY*255)) / TILE_SIZE);
 }
 
 void GameScreen_LevelEditor::WorldToScreen(int worldPosX, int worldPosY, int &x, int &y) {

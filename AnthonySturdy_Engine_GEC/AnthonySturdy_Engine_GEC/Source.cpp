@@ -43,7 +43,7 @@ int main(int argc, char* args[]) {
 		while (!quit) {
 			quit = Update();
 			//Clear the screen to black
-			SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+			SDL_SetRenderDrawColor(gRenderer, 0x33, 0x33, 0x33, 0xFF);
 			SDL_RenderClear(gRenderer);
 
 			gameScreenManager->Render();
