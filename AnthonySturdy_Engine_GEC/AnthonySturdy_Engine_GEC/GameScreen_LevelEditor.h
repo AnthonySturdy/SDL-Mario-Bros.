@@ -75,8 +75,7 @@ private:
 		SPRITE_CLOUD_BOTTOM_RIGHT = 695
 	};
 	unsigned short currentSprite = SPRITE_GROUND;		//Current sprite being drawn
-	void EditMap(unsigned short sprite, int x, int y);				//Edit map array
-	void DrawCursor(unsigned short sprite, int x, int y);
+	bool EditMap(unsigned short sprite, int x, int y);				//Edit map array
 
 	//Map textures and information
 	Texture2D* texture_tileset;
@@ -84,7 +83,7 @@ private:
 	std::vector<Rect2D*> tileset;
 
 	//Camera Panning
-	void CameraPanning(int mX, int mY);
+	bool CameraPanning(int mX, int mY);
 	float cameraOffsetX = 0, cameraOffsetY = 0;
 	int startPanX = 0, startPanY = 0;
 
@@ -94,6 +93,7 @@ private:
 	bool rightMouseDown = false;
 
 	//UI
+	bool SelectSprites(int mouseX, int mouseY);
 	Texture2D* textureSpriteSelectBackground;
 	UIElement* uiSpriteSelectBackground;			//The background sprite behind sprite selection
 

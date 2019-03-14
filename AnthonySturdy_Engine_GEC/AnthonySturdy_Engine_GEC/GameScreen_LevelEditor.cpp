@@ -267,11 +267,10 @@ void GameScreen_LevelEditor::Render() {
 	SDL_GetMouseState(&mouseX, &mouseY);
 	mouseX /= SCREEN_SCALE;
 	mouseY /= SCREEN_SCALE;
-
 	int wX, wY;
 	ScreenToWorld(mouseX, mouseY, wX, wY);
 	if (wX >= 0 && wY >= 0 && wX < mapSizeX && wY < mapSizeY) {
-		DrawCursor(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
+		RenderCursorSprite(currentSprite, (zeroWorldToScreenX + wX) * TILE_SIZE, (zeroWorldToScreenY + wY) * TILE_SIZE);
 	}
 
 	//UI
@@ -280,7 +279,6 @@ void GameScreen_LevelEditor::Render() {
 	SDL_SetRenderDrawColor(mRenderer, 255, 20, 20, 255);
 	SDL_RenderFillRect(mRenderer, &curSpriteHighlight);
 	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
-
 	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
 		uiSpriteSelectButtons[i]->Render();
 	}
@@ -289,36 +287,14 @@ void GameScreen_LevelEditor::Render() {
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
-
 	mouseX /= SCREEN_SCALE;
 	mouseY /= SCREEN_SCALE;
-	
 	int worldMouseX, worldMouseY;
 	ScreenToWorld(mouseX, mouseY, worldMouseX, worldMouseY);
 
-	EditMap(currentSprite, worldMouseX, worldMouseY);
-	CameraPanning(mouseX, mouseY);
-
-	for (int i = 0; i < spriteSelectButtonRects.size(); i++) {
-		Rect2D r = spriteSelectButtonRects[i];
-		int x, y;
-		SDL_GetMouseState(&x, &y);
-		x /= SCREEN_SCALE;
-		y /= SCREEN_SCALE;
-
-		//If user hovering over sprite
-		if ((x > r.x) && (x < r.x + r.w) && (y > r.y) && (y < r.y + r.h)) {
-			std::cout << "Hovering index " << i << std::endl;
-
-			if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
-				//Left mouse down
-				std::cout << "Sprite changing to: " << spriteSelectButtonSprites[i] << std::endl;
-				currentSprite = spriteSelectButtonSprites[i];
-				curSpriteHighlight.x = r.x - 1;
-				curSpriteHighlight.y = r.y - 1;
-			}
-		}
-	}
+	if (SelectSprites(mouseX, mouseY)) { return; }
+	if (EditMap(currentSprite, worldMouseX, worldMouseY)) { return; }
+	if (CameraPanning(mouseX, mouseY)) { return; }
 
 	switch (e.type) {
 	//Key Down Events
@@ -331,7 +307,7 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 	}
 }
 
-void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
+bool GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 	//If mouse is in screen bounds
 	if (x > -1 && y > -1 &&
 		x < mapSizeX && y < mapSizeY) {
@@ -364,14 +340,11 @@ void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 			rightMouseDown = false;
 		}
 	}
+
+	return (leftMouseDown || rightMouseDown);
 }
 
-//TODO: Get rid of this function, which is just a middle-man for the RenderCursorSprite function for no reason
-void GameScreen_LevelEditor::DrawCursor(unsigned short sprite, int x, int y) {
-	RenderCursorSprite(sprite, x, y);
-}
-
-void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
+bool GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 	if (middleMouseDown) {
 		//Middle mouse held
 		cameraOffsetX -= (mX - startPanX) * 0.005f;
@@ -390,6 +363,29 @@ void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 		//Middle mouse up
 		middleMouseDown = false;
 	}
+
+	return middleMouseDown;
+}
+
+bool GameScreen_LevelEditor::SelectSprites(int mouseX, int mouseY) {
+	for (int i = 0; i < spriteSelectButtonRects.size(); i++) {
+		Rect2D r = spriteSelectButtonRects[i];
+
+		//If user hovering over sprite
+		if ((mouseX > r.x) && (mouseX < r.x + r.w) && (mouseY > r.y) && (mouseY < r.y + r.h)) {
+			if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
+				//Left mouse down
+				std::cout << "Sprite changing to: " << spriteSelectButtonSprites[i] << std::endl;
+				currentSprite = spriteSelectButtonSprites[i];
+				curSpriteHighlight.x = r.x - 1;
+				curSpriteHighlight.y = r.y - 1;
+
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 bool GameScreen_LevelEditor::ReadMapFromFile(const char* filePath) {
