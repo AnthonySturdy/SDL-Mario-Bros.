@@ -1,6 +1,7 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	
+// TODO:	- Entities
+//			- Make map playable
 
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
 	mapSizeX = _mapSizeX;
@@ -39,17 +40,18 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 		}
 	}
 
-	//Create map
-	for (int i = 0; i < mapSizeX * mapSizeY; i++) {
-		map.push_back(SPRITE_CLEAR);
+	if (!ReadMapFromFile("LevelMap.gec")) {
+		//If can't load existing map, create blank map
+		for (int i = 0; i < mapSizeX * mapSizeY; i++) {
+			map.push_back(SPRITE_CLEAR);
+		}
 	}
-
+	
 	//Load UI textures
 	textureSpriteSelectBackground = new Texture2D(mRenderer);
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
 	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 230), nullptr);
 
-	//TODO: Might be a better way of doing this rather than hard-coding it.
 #pragma region UI_Buttons
 	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them
 
@@ -317,6 +319,16 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 			}
 		}
 	}
+
+	switch (e.type) {
+	//Key Down Events
+	case SDL_KEYDOWN:
+		switch (e.key.keysym.sym) {
+		case SDLK_RETURN:
+			WriteMapToFile("LevelMap.gec");
+			break;
+		}
+	}
 }
 
 void GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
@@ -378,6 +390,28 @@ void GameScreen_LevelEditor::CameraPanning(int mX, int mY) {
 		//Middle mouse up
 		middleMouseDown = false;
 	}
+}
+
+bool GameScreen_LevelEditor::ReadMapFromFile(const char* filePath) {
+	std::ifstream inFile(filePath, std::ifstream::binary);
+	if (!inFile.is_open()) {
+		std::cout << "Failed to load map file" << std::endl;
+		return false ;
+	}
+
+	for (int i = 0; i < mapSizeX * mapSizeY; i++) {
+		map.push_back(0);
+	}
+	inFile.read((char*)&map[0], sizeof(unsigned short) * map.size());
+	inFile.close();
+
+	return true;
+}
+
+void GameScreen_LevelEditor::WriteMapToFile(const char* filePath) {
+	std::ofstream outFile(filePath, std::ofstream::binary);
+	outFile.write((char*)&map[0], sizeof(unsigned short) * map.size());
+	outFile.close();
 }
 
 void GameScreen_LevelEditor::RenderMapSprite(unsigned short sprite, int x, int y) {

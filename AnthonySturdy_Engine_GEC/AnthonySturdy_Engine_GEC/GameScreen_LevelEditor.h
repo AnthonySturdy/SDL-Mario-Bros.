@@ -10,6 +10,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 class GameScreen_LevelEditor : public GameScreen {
 public:
@@ -28,6 +29,8 @@ private:
 	//Map
 	int mapSizeX, mapSizeY;
 	std::vector<unsigned short> map;
+	bool ReadMapFromFile(const char* filePath);
+	void WriteMapToFile(const char* filePath);
 	void RenderMapSprite(unsigned short sprite, int x, int y);		//Renders a sprite from map tileset
 	void RenderCursorSprite(unsigned short sprite, int x, int y);	//Renders a sprite from cursor tileset
 	enum SPRITES {	//Tileset labels
