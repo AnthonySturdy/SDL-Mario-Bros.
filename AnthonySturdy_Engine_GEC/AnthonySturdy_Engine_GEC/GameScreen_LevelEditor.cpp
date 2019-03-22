@@ -1,8 +1,5 @@
 #include "GameScreen_LevelEditor.h"
 
-// TODO:	- Entities
-//			- Make map playable
-
 GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
 	mapSizeX = _mapSizeX;
 	mapSizeY = _mapSizeY;
@@ -44,6 +41,7 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 		//If can't load existing map, create blank map
 		for (int i = 0; i < mapSizeX * mapSizeY; i++) {
 			map.push_back(SPRITE_CLEAR);
+			entityMap.push_back(SPRITE_CLEAR);
 		}
 	}
 	
@@ -52,9 +50,13 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
 	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 230), nullptr);
 
+	SDL_Color c = { 255, 255, 255, 255 };
+	currentSpriteDescription = new TextElement("Testing", "Pixel-Emulator.ttf", 10, Rect2D(100, 100, 100, 100), c, mRenderer);
+
 #pragma region UI_Buttons
 	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them
 
+	//Collisions
 	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(10 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_GROUND]));
 	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
 	spriteSelectButtonSprites.push_back(SPRITE_GROUND);
@@ -163,6 +165,7 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
 	spriteSelectButtonSprites.push_back(SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP);
 	//Re position these +161pixels left
+	//Non-Collisions
 	xOff = 0;
 	yOff = 0;
 	xOff++;
@@ -231,8 +234,28 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(171 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_CLOUD_BOTTOM_RIGHT]));
 	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
 	spriteSelectButtonSprites.push_back(SPRITE_CLOUD_BOTTOM_RIGHT);
-
-
+	//Entities
+	xOff = 0;
+	yOff = 0;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(332 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_ENTITY_MARIO_LEVEL_START]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_ENTITY_MARIO_LEVEL_START);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(332 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_ENTITY_FLAG_LEVEL_END]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_ENTITY_FLAG_LEVEL_END);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(332 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_ENTITY_COIN]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_ENTITY_COIN);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(332 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_ENTITY_GOOMBA]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_ENTITY_GOOMBA);
+	xOff++;
+	uiSpriteSelectButtons.push_back(new UIElement(texture_tileset, Rect2D(332 + (xOff * 18), 15 + (yOff * 18), TILE_SIZE, TILE_SIZE), uiSpriteSelectBackground, *tileset[SPRITE_ENTITY_KOOPA]));
+	spriteSelectButtonRects.push_back(Rect2D(uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.x, uiSpriteSelectButtons[uiSpriteSelectButtons.size() - 1]->globalPos.y, TILE_SIZE, TILE_SIZE));
+	spriteSelectButtonSprites.push_back(SPRITE_ENTITY_KOOPA);
 
 #pragma endregion
 
@@ -256,7 +279,13 @@ void GameScreen_LevelEditor::Render() {
 	//Draw Map
 	for (int x = 0; x < mapSizeX; x++) {
 		for (int y = 0; y < mapSizeY; y++) {
+			//Render normal map
 			RenderMapSprite(map[y * mapSizeX + x],
+							(zeroWorldToScreenX + x) * TILE_SIZE,
+							(zeroWorldToScreenY + y) * TILE_SIZE);
+
+			//Render entity map
+			RenderMapSprite(entityMap[y * mapSizeX + x],
 							(zeroWorldToScreenX + x) * TILE_SIZE,
 							(zeroWorldToScreenY + y) * TILE_SIZE);
 		}
@@ -282,6 +311,8 @@ void GameScreen_LevelEditor::Render() {
 	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
 		uiSpriteSelectButtons[i]->Render();
 	}
+
+	currentSpriteDescription->Render();
 }
 
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
@@ -292,6 +323,7 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 	int worldMouseX, worldMouseY;
 	ScreenToWorld(mouseX, mouseY, worldMouseX, worldMouseY);
 
+	//It's like this to have layers (of UI and the editor) without cross-interaction
 	if (SelectSprites(mouseX, mouseY)) { return; }
 	if (EditMap(currentSprite, worldMouseX, worldMouseY)) { return; }
 	if (CameraPanning(mouseX, mouseY)) { return; }
@@ -315,12 +347,21 @@ bool GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 		//Drawing tiles
 		if (leftMouseDown) {
 			//Left mouse held
-			map[y * mapSizeX + x] = sprite;
+			if (sprite >= SPRITE_ENTITY_MARIO_LEVEL_START) {
+				entityMap[y * mapSizeX + x] = sprite;
+			} else {
+				map[y * mapSizeX + x] = sprite;
+			}
 		}
 		if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
 			//Left mouse down
 			leftMouseDown = true;
-			map[y * mapSizeX + x] = sprite;
+
+			if (sprite >= SPRITE_ENTITY_MARIO_LEVEL_START) {
+				entityMap[y * mapSizeX + x] = sprite;
+			} else {
+				map[y * mapSizeX + x] = sprite;
+			}
 		} else {
 			//Left mouse up
 			leftMouseDown = false;
@@ -330,11 +371,13 @@ bool GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
 		if (rightMouseDown) {
 			//Right mouse held
 			map[y * mapSizeX + x] = SPRITE_CLEAR;
+			entityMap[y * mapSizeX + x] = SPRITE_CLEAR;
 		}
 		if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(3)) { 
 			//Right mouse down
 			rightMouseDown = true;
 			map[y * mapSizeX + x] = SPRITE_CLEAR;
+			entityMap[y * mapSizeX + x] = SPRITE_CLEAR;
 		} else {
 			//Right mouse up
 			rightMouseDown = false;
@@ -397,8 +440,11 @@ bool GameScreen_LevelEditor::ReadMapFromFile(const char* filePath) {
 
 	for (int i = 0; i < mapSizeX * mapSizeY; i++) {
 		map.push_back(0);
+		entityMap.push_back(0);
 	}
+
 	inFile.read((char*)&map[0], sizeof(unsigned short) * map.size());
+	inFile.read((char*)&entityMap[0], sizeof(unsigned short) * entityMap.size());
 	inFile.close();
 
 	return true;
@@ -407,6 +453,7 @@ bool GameScreen_LevelEditor::ReadMapFromFile(const char* filePath) {
 void GameScreen_LevelEditor::WriteMapToFile(const char* filePath) {
 	std::ofstream outFile(filePath, std::ofstream::binary);
 	outFile.write((char*)&map[0], sizeof(unsigned short) * map.size());
+	outFile.write((char*)&entityMap[0], sizeof(unsigned short) * entityMap.size());
 	outFile.close();
 }
 
@@ -427,8 +474,8 @@ void GameScreen_LevelEditor::RenderCursorSprite(unsigned short sprite, int x, in
 }
 
 void GameScreen_LevelEditor::ScreenToWorld(int screenPosX, int screenPosY, int &x, int &y) {
-	x = (int)((screenPosX + (cameraOffsetX*255)) / TILE_SIZE);
-	y = (int)((screenPosY + (cameraOffsetY*255)) / TILE_SIZE);
+	x = (int)((screenPosX + (cameraOffsetX * 255)) / TILE_SIZE);
+	y = (int)((screenPosY + (cameraOffsetY * 255)) / TILE_SIZE);
 }
 
 void GameScreen_LevelEditor::WorldToScreen(int worldPosX, int worldPosY, int &x, int &y) {

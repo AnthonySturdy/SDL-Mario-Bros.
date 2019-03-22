@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "UIElement.h"
+#include "TextElement.h"
 
 #include <vector>
 #include <iostream>
@@ -29,6 +30,7 @@ private:
 	//Map
 	int mapSizeX, mapSizeY;
 	std::vector<unsigned short> map;
+	std::vector<unsigned short> entityMap;
 	bool ReadMapFromFile(const char* filePath);
 	void WriteMapToFile(const char* filePath);
 	void RenderMapSprite(unsigned short sprite, int x, int y);		//Renders a sprite from map tileset
@@ -72,7 +74,12 @@ private:
 		SPRITE_CLOUD_TOP_RIGHT = 662,
 		SPRITE_CLOUD_BOTTOM_LEFT = 693,
 		SPRITE_CLOUD_BOTTOM_MIDDLE = 694,
-		SPRITE_CLOUD_BOTTOM_RIGHT = 695
+		SPRITE_CLOUD_BOTTOM_RIGHT = 695,
+		SPRITE_ENTITY_MARIO_LEVEL_START = 919,
+		SPRITE_ENTITY_FLAG_LEVEL_END = 920,
+		SPRITE_ENTITY_COIN = 921,
+		SPRITE_ENTITY_GOOMBA = 922,
+		SPRITE_ENTITY_KOOPA = 923
 	};
 	unsigned short currentSprite = SPRITE_GROUND;		//Current sprite being drawn
 	bool EditMap(unsigned short sprite, int x, int y);				//Edit map array
@@ -101,4 +108,6 @@ private:
 	std::vector<UIElement*> uiSpriteSelectButtons;	//The sprite select button UI elements
 	std::vector<Rect2D> spriteSelectButtonRects;	//Store the position and size of the sprite selection buttons
 	std::vector<SPRITES> spriteSelectButtonSprites;	//Corresponds to spriteSelectButtonRects so we know what sprite to switch to on button click
+
+	TextElement* currentSpriteDescription;
 };
