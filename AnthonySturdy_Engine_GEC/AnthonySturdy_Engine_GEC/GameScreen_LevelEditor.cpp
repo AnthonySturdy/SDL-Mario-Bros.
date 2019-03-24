@@ -50,8 +50,8 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
 	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 230), nullptr);
 
-	SDL_Color c = { 255, 255, 255, 255 };
-	currentSpriteDescription = new TextElement("Testing", "Pixel-Emulator.ttf", 10, Rect2D(100, 100, 100, 100), c, mRenderer);
+	//SDL_Color c = { 255, 255, 255, 255 };
+	//currentSpriteDescription = new TextElement("Testing", "Pixel-Emulator.ttf", 10, Rect2D(100, 100, 100, 100), c, mRenderer);
 
 #pragma region UI_Buttons
 	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them
@@ -259,6 +259,16 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 
 #pragma endregion
 
+	pauseMenuTexture = new Texture2D(mRenderer);
+	pauseMenuTexture->LoadFromFile("Images/UI_Pause.png");
+	currentPauseMenuSelectionTexture = new Texture2D(mRenderer);
+	currentPauseMenuSelectionTexture->LoadFromFile("Images/UI_Pause_Cursor.png");
+	uiPauseMenu = new UIElement(pauseMenuTexture, Rect2D((SCREEN_WIDTH / 4) - (pauseMenuTexture->GetWidth() / 2), (SCREEN_HEIGHT / 4) - (pauseMenuTexture->GetHeight() / 2)), nullptr);
+	uiCurrentPauseMenuSelection = new UIElement(currentPauseMenuSelectionTexture, Rect2D(18, 43), uiPauseMenu);
+	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 43, 92, 7));
+	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 58, 92, 7));
+	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 73, 92, 7));
+
 	return false;
 }
 
@@ -313,6 +323,11 @@ void GameScreen_LevelEditor::Render() {
 	}
 
 	currentSpriteDescription->Render();
+
+	if (isPaused) {
+		uiPauseMenu->Render();
+		uiCurrentPauseMenuSelection->Render();
+	}
 }
 
 void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
@@ -323,20 +338,27 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 	int worldMouseX, worldMouseY;
 	ScreenToWorld(mouseX, mouseY, worldMouseX, worldMouseY);
 
-	//It's like this to have layers (of UI and the editor) without cross-interaction
-	if (SelectSprites(mouseX, mouseY)) { return; }
-	if (EditMap(currentSprite, worldMouseX, worldMouseY)) { return; }
-	if (CameraPanning(mouseX, mouseY)) { return; }
-
+	//Keyboard input
 	switch (e.type) {
 	//Key Down Events
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {
-		case SDLK_RETURN:
-			WriteMapToFile("LevelMap.gec");
+		case SDLK_ESCAPE:
+			if (isPaused) {
+				isPaused = false;
+			} else {
+				isPaused = true;
+			}
 			break;
 		}
 	}
+
+	//Mouse input
+	//It's like this to have layers (of UI and the editor) without cross-interaction
+	if (PauseMenu(mouseX, mouseY)) { return; }
+	if (SelectSprites(mouseX, mouseY)) { return; }
+	if (EditMap(currentSprite, worldMouseX, worldMouseY)) { return; }
+	if (CameraPanning(mouseX, mouseY)) { return; }
 }
 
 bool GameScreen_LevelEditor::EditMap(unsigned short sprite, int x, int y) {
@@ -429,6 +451,38 @@ bool GameScreen_LevelEditor::SelectSprites(int mouseX, int mouseY) {
 	}
 
 	return false;
+}
+
+bool GameScreen_LevelEditor::PauseMenu(int mouseX, int mouseY) {
+	if (isPaused) {
+		for (int i = 0; i < uiPauseMenuButtonRects.size(); i++) {
+			Rect2D r = uiPauseMenuButtonRects[i];
+
+			//If user hovering over sprite
+			if ((mouseX > r.x) && (mouseX < r.x + r.w) && (mouseY > r.y) && (mouseY < r.y + r.h)) {
+				uiCurrentPauseMenuSelection->globalPos.y = r.y;
+
+				if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
+					switch (i) {
+					case 0:
+						// Clicked Resume
+						isPaused = false;
+						break;
+					case 1:
+						//Clicked Save
+						WriteMapToFile("LevelMap.gec");
+						break;
+					case 2:
+						//Clicked Main Menu
+						break;
+					}
+				}
+			}
+		}
+
+	}
+
+	return isPaused;
 }
 
 bool GameScreen_LevelEditor::ReadMapFromFile(const char* filePath) {

@@ -110,4 +110,12 @@ private:
 	std::vector<SPRITES> spriteSelectButtonSprites;	//Corresponds to spriteSelectButtonRects so we know what sprite to switch to on button click
 
 	TextElement* currentSpriteDescription;
+
+	bool isPaused = false;
+	bool PauseMenu(int mouseX, int mouseY);
+	Texture2D* pauseMenuTexture;
+	Texture2D* currentPauseMenuSelectionTexture;
+	UIElement* uiPauseMenu;
+	UIElement* uiCurrentPauseMenuSelection;
+	std::vector<Rect2D> uiPauseMenuButtonRects;
 };
