@@ -35,7 +35,7 @@ private:
 	void WriteMapToFile(const char* filePath);
 	void RenderMapSprite(unsigned short sprite, int x, int y);		//Renders a sprite from map tileset
 	void RenderCursorSprite(unsigned short sprite, int x, int y);	//Renders a sprite from cursor tileset
-	enum SPRITES {	//Tileset labels
+	enum SPRITES {	//Tileset Positions
 		SPRITE_CLEAR = 0,
 		SPRITE_GROUND = 1,
 		SPRITE_BRICK_WHITE_TOP = 2,
@@ -80,7 +80,7 @@ private:
 		SPRITE_ENTITY_COIN = 921,
 		SPRITE_ENTITY_GOOMBA = 922,
 		SPRITE_ENTITY_KOOPA = 923
-	};
+	};	
 	unsigned short currentSprite = SPRITE_GROUND;		//Current sprite being drawn
 	bool EditMap(unsigned short sprite, int x, int y);				//Edit map array
 
@@ -112,6 +112,7 @@ private:
 	std::vector<SPRITES> spriteSelectButtonSprites;	//Corresponds to spriteSelectButtonRects so we know what sprite to switch to on button click
 
 	TextElement* currentSpriteDescription;
+	void ChangeSpriteDescription();
 
 	bool isPaused = false;
 	bool PauseMenu(int mouseX, int mouseY);

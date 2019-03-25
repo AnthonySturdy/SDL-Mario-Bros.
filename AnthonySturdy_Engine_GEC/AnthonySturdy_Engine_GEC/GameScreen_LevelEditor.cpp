@@ -53,7 +53,7 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
 	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 220), nullptr);
 
-	currentSpriteDescription = new TextElement("Collisions", fontTexture, Rect2D(31, SCREEN_HEIGHT - 15), mRenderer);
+	currentSpriteDescription = new TextElement("Ground", fontTexture, Rect2D(31, SCREEN_HEIGHT - 15), mRenderer);
 
 #pragma region UI_Buttons
 	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them
@@ -447,12 +447,63 @@ bool GameScreen_LevelEditor::SelectSprites(int mouseX, int mouseY) {
 				curSpriteHighlight.x = r.x - 1;
 				curSpriteHighlight.y = r.y - 1;
 
+				ChangeSpriteDescription();
+
 				return true;
 			}
 		}
 	}
 
 	return false;
+}
+
+void GameScreen_LevelEditor::ChangeSpriteDescription() {
+	switch (currentSprite) {
+		case SPRITE_CLEAR: currentSpriteDescription->text = "CLEARSPRITE"; break;
+		case SPRITE_GROUND: currentSpriteDescription->text = "Ground"; break;
+		case SPRITE_BRICK_WHITE_TOP: currentSpriteDescription->text = "Brick (White top)"; break;
+		case SPRITE_BRICK: currentSpriteDescription->text = "Brick"; break;
+		case SPRITE_BEZEL: currentSpriteDescription->text = "Bezel"; break;
+		case SPRITE_QUESTION_BLOCK: currentSpriteDescription->text = "Question Block"; break;
+		case SPRITE_QUESTION_BLOCK_USED: currentSpriteDescription->text = "Question Block Used"; break;
+		case SPRITE_CASTLE_BRICKS: currentSpriteDescription->text = "Castle Bricks"; break;
+		case SPRITE_CASTLE_BATTLEMENT_EMPTY: currentSpriteDescription->text = "Castle Battlement Empty"; break;
+		case SPRITE_CASTLE_BATTLEMENT_FULL: currentSpriteDescription->text = "Castle Battlement Full"; break;
+		case SPRITE_CASTLE_WINDOW_RIGHT: currentSpriteDescription->text = "Castle Window Right"; break;
+		case SPRITE_CASTLE_WINDOW_LEFT: currentSpriteDescription->text = "Castle Window Left"; break;
+		case SPRITE_CASTLE_DOOR_ARCH: currentSpriteDescription->text = "Castle door arch"; break;
+		case SPRITE_CASTLE_DOOR_BLACK: currentSpriteDescription->text = "Castle door black"; break;
+		case SPRITE_PIPE_VERTICAL_OPENING_LEFT: currentSpriteDescription->text = "Pipe vertical opening left"; break;
+		case SPRITE_PIPE_VERTICAL_OPENING_RIGHT: currentSpriteDescription->text = "Pipe vertical opening right"; break;
+		case SPRITE_PIPE_VERTICAL_BASE_LEFT: currentSpriteDescription->text = "Pipe vertical base left"; break;
+		case SPRITE_PIPE_VERTICAL_BASE_RIGHT: currentSpriteDescription->text = "Pipe vertical base right"; break;
+		case SPRITE_PIPE_HORIZONTAL_OPENING_TOP: currentSpriteDescription->text = "Pipe horizontal opening top"; break;
+		case SPRITE_PIPE_HORIZONTAL_OPENING_BOTTOM: currentSpriteDescription->text = "Pipe horizontal opening bottom"; break;
+		case SPRITE_PIPE_HORIZONTAL_BASE_TOP: currentSpriteDescription->text = "Pipe horizontal base top"; break;
+		case SPRITE_PIPE_HORIZONTAL_BASE_BOTTOM: currentSpriteDescription->text = "Pipe horizontal base bottom"; break;
+		case SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_TOP: currentSpriteDescription->text = "Pipe vertical horizontal connect top"; break;
+		case SPRITE_PIPE_VERTICAL_HORIZONTAL_CONNECT_BOTTOM: currentSpriteDescription->text = "Pipe vertical horizontal connect bottom"; break;
+		case SPRITE_BUSH_LARGE_LEFT_SLOPE: currentSpriteDescription->text = "Bush large left slope"; break;
+		case SPRITE_BUSH_LARGE_LEFT_SPOTS: currentSpriteDescription->text = "Bush large left spots"; break;
+		case SPRITE_BUSH_LARGE_TOP: currentSpriteDescription->text = "Bush large top"; break;
+		case SPRITE_BUSH_LARGE_FULL: currentSpriteDescription->text = "Bush large full"; break;
+		case SPRITE_BUSH_LARGE_RIGHT_SLOPE: currentSpriteDescription->text = "Bush large right slope"; break;
+		case SPRITE_BUSH_LARGE_RIGHT_SPOTS: currentSpriteDescription->text = "Bush large right spots"; break;
+		case SPRITE_BUSH_SMALL_LEFT: currentSpriteDescription->text = "Bush small left"; break;
+		case SPRITE_BUSH_SMALL_MIDDLE: currentSpriteDescription->text = "Bush small middle"; break;
+		case SPRITE_BUSH_SMALL_RIGHT: currentSpriteDescription->text = "Bush small right"; break;
+		case SPRITE_CLOUD_TOP_LEFT: currentSpriteDescription->text = "Cloud top left"; break;
+		case SPRITE_CLOUD_TOP_MIDDLE: currentSpriteDescription->text = "Cloud top middle"; break;
+		case SPRITE_CLOUD_TOP_RIGHT: currentSpriteDescription->text = "Cloud top right"; break;
+		case SPRITE_CLOUD_BOTTOM_LEFT: currentSpriteDescription->text = "Cloud bottom left"; break;
+		case SPRITE_CLOUD_BOTTOM_MIDDLE: currentSpriteDescription->text = "Cloud bottom middle"; break;
+		case SPRITE_CLOUD_BOTTOM_RIGHT: currentSpriteDescription->text = "Cloud bottom right"; break;
+		case SPRITE_ENTITY_MARIO_LEVEL_START: currentSpriteDescription->text = "Level Start"; break;
+		case SPRITE_ENTITY_FLAG_LEVEL_END: currentSpriteDescription->text = "Level End"; break;
+		case SPRITE_ENTITY_COIN: currentSpriteDescription->text = "Coin"; break;
+		case SPRITE_ENTITY_GOOMBA: currentSpriteDescription->text = "Goomba"; break;
+		case SPRITE_ENTITY_KOOPA: currentSpriteDescription->text = "Koopa"; break;
+	}
 }
 
 bool GameScreen_LevelEditor::PauseMenu(int mouseX, int mouseY) {
