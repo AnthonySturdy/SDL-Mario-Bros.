@@ -46,12 +46,14 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	}
 	
 	//Load UI textures
+	fontTexture = new Texture2D(mRenderer);
+	fontTexture->LoadFromFile("Images/UI_Font_Sprite.png");
+
 	textureSpriteSelectBackground = new Texture2D(mRenderer);
 	textureSpriteSelectBackground->LoadFromFile("Images/UI_TileSelection.png");
-	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 230), nullptr);
+	uiSpriteSelectBackground = new UIElement(textureSpriteSelectBackground, Rect2D(31, 220), nullptr);
 
-	//SDL_Color c = { 255, 255, 255, 255 };
-	//currentSpriteDescription = new TextElement("Testing", "Pixel-Emulator.ttf", 10, Rect2D(100, 100, 100, 100), c, mRenderer);
+	currentSpriteDescription = new TextElement("Collisions", fontTexture, Rect2D(31, SCREEN_HEIGHT - 15), mRenderer);
 
 #pragma region UI_Buttons
 	int xOff = 0, yOff = 0;	//Used for the positioning of buttons so it's easier when coding them

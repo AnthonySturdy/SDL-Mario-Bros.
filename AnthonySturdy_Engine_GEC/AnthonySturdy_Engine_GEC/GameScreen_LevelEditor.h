@@ -100,11 +100,13 @@ private:
 	bool rightMouseDown = false;
 
 	//UI
+	Texture2D* fontTexture;
+
 	bool SelectSprites(int mouseX, int mouseY);
 	Texture2D* textureSpriteSelectBackground;
 	UIElement* uiSpriteSelectBackground;			//The background sprite behind sprite selection
 
-	SDL_Rect curSpriteHighlight = { 40, 244, 18, 18 };
+	SDL_Rect curSpriteHighlight = { 40, 234, 18, 18 };
 	std::vector<UIElement*> uiSpriteSelectButtons;	//The sprite select button UI elements
 	std::vector<Rect2D> spriteSelectButtonRects;	//Store the position and size of the sprite selection buttons
 	std::vector<SPRITES> spriteSelectButtonSprites;	//Corresponds to spriteSelectButtonRects so we know what sprite to switch to on button click
