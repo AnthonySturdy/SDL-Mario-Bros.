@@ -34,7 +34,14 @@ bool GameScreen_MainMenu::SetUpLevel() {
 		groundSpriteLocations.push_back(Rect2D(i, SCREEN_HEIGHT - 32));
 		groundSpriteLocations.push_back(Rect2D(i, SCREEN_HEIGHT - 16));
 	}
-	marioLocation = Rect2D(100, SCREEN_HEIGHT - 48);
+	marioLocation = Rect2D(118, SCREEN_HEIGHT - 48);
+
+	/*bushSourceRects.push_back(Rect2D(128, 128, 16, 16));
+	bushSourceRects.push_back(Rect2D(144, 128, 16, 16));
+	bushSourceRects.push_back(Rect2D(160, 128, 16, 16));
+	bushSourceRects.push_back(Rect2D(128, 144, 16, 16));
+	bushSourceRects.push_back(Rect2D(144, 144, 16, 16));
+	bushSourceRects.push_back(Rect2D(160, 144, 16, 16));*/
 
 	//Load UI
 	marioText = new TextElement("Mario", fontTexture, Rect2D(65, 15), mRenderer);
@@ -74,9 +81,54 @@ void GameScreen_MainMenu::Render() {
 		SDL_Rect dest = { groundSpriteLocations[i].x, groundSpriteLocations[i].y, 16, 16 };
 		tileset->Render(src, dest, SDL_FLIP_NONE);
 	}
-	src = { 448, 432, 16, 16 };
-	SDL_Rect dest = { marioLocation.x, marioLocation.y, 16, 16 };
+
+	src = { 144, 128, 16, 16 };	//Large Bush
+	SDL_Rect dest = { (16 * 7), SCREEN_HEIGHT - 80, 16, 16 };
 	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 128, 128, 16, 16 };	
+	dest = { (16 * 6), SCREEN_HEIGHT - 64, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 144, 144, 16, 16 };
+	dest = { (16 * 7), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 160, 128, 16, 16 };
+	dest = { (16 * 8), SCREEN_HEIGHT - 64, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 128, 128, 16, 16 };
+	dest = { (16 * 5), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 160, 128, 16, 16 };
+	dest = { (16 * 9), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 128, 144, 16, 16 };
+	dest = { (16 * 6), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 128, 144, 16, 16 };
+	dest = { (16 * 7), SCREEN_HEIGHT - 64, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 160, 144, 16, 16 };
+	dest = { (16 * 8), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+
+	src = { 176, 144, 16, 16 };	//Small Bush
+	dest = { SCREEN_WIDTH - (16*9), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 192, 144, 16, 16 };
+	dest = { SCREEN_WIDTH - (16 * 8), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 192, 144, 16, 16 };
+	dest = { SCREEN_WIDTH - (16 * 7), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 192, 144, 16, 16 };
+	dest = { SCREEN_WIDTH - (16 * 6), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+	src = { 208, 144, 16, 16 };
+	dest = { SCREEN_WIDTH - (16 * 5), SCREEN_HEIGHT - 48, 16, 16 };
+	tileset->Render(src, dest, SDL_FLIP_NONE);
+
+	src = { 448, 432, 16, 16 };	//Mario
+	SDL_Rect destRect = { marioLocation.x, marioLocation.y, 16, 16 };
+	tileset->Render(src, destRect, SDL_FLIP_NONE);
 
 	//Draw UI
 	marioText->Render();
