@@ -186,7 +186,15 @@ SDL_Rect TextElement::GetRectFromChar(char c) {
 		break;
 	case ')':
 		r = { 180, 10, 10, 10 };
-
+		break;
+	case '+':
+		r = { 220, 20, 10, 10 };
+		break;
+	case '#':
+		r = { 230, 20, 10, 10 };
+		break;
+	case '@':
+		r = { 240, 20, 10, 10 };
 		break;
 	default:
 		r = { 250, 20, 10, 10 };

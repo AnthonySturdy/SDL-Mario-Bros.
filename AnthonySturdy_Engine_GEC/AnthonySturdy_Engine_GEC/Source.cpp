@@ -31,7 +31,7 @@ int main(int argc, char* args[]) {
 	if (InitSDL()) {
 		bool quit = false;
 
-		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL_EDITOR);
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_MAIN_MENU);
 
 		gOldTime = SDL_GetTicks();
 
@@ -65,7 +65,7 @@ bool InitSDL() {
 		return false;
 	} else {
 		//Attempt Window Creation
-		gWindow = SDL_CreateWindow("Anthony Sturdy Engine - GEC",
+		gWindow = SDL_CreateWindow("SDL Mario Bros. // Anthony Sturdy // Staffordshire University // Game Engine Creation Semester 2",
 									SDL_WINDOWPOS_UNDEFINED,
 									SDL_WINDOWPOS_UNDEFINED,
 									SCREEN_WIDTH * SCREEN_SCALE,

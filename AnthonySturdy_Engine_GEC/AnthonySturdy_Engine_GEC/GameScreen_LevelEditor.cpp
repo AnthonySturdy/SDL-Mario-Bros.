@@ -1,6 +1,6 @@
 #include "GameScreen_LevelEditor.h"
 
-GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY) : GameScreen(renderer) {
+GameScreen_LevelEditor::GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY, GameScreenManager* _manager) : GameScreen(renderer, _manager) {
 	mapSizeX = _mapSizeX;
 	mapSizeY = _mapSizeY;
 
@@ -20,6 +20,21 @@ GameScreen_LevelEditor::~GameScreen_LevelEditor() {
 	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
 		delete uiSpriteSelectButtons[i];
 	}
+
+	delete fontTexture;
+	delete textureSpriteSelectBackground;
+	delete uiSpriteSelectBackground;
+
+	for (int i = 0; i < uiSpriteSelectButtons.size(); i++) {
+		delete uiSpriteSelectButtons[i];
+	}
+
+	delete currentSpriteDescription;
+
+	delete pauseMenuTexture;
+	delete currentPauseMenuSelectionTexture;
+	delete uiPauseMenu;
+	delete uiCurrentPauseMenuSelection;
 }
 
 bool GameScreen_LevelEditor::SetUpLevel() {
@@ -524,9 +539,11 @@ bool GameScreen_LevelEditor::PauseMenu(int mouseX, int mouseY) {
 					case 1:
 						//Clicked Save
 						WriteMapToFile("LevelMap.gec");
+						isPaused = true;
 						break;
 					case 2:
 						//Clicked Main Menu
+						manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
 						break;
 					}
 				}

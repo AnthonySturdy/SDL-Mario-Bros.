@@ -17,7 +17,7 @@ class Character;
 
 class GameScreen_Level1 : public GameScreen {
 public:
-	GameScreen_Level1(SDL_Renderer* renderer);
+	GameScreen_Level1(SDL_Renderer* renderer, GameScreenManager* _manager);
 	~GameScreen_Level1();
 
 	void Render();

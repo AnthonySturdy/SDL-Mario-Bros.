@@ -1,7 +1,8 @@
 #include "GameScreen.h"
 
-GameScreen::GameScreen(SDL_Renderer* renderer) {
+GameScreen::GameScreen(SDL_Renderer* renderer, GameScreenManager* _manager) {
 	mRenderer = renderer;
+	manager = _manager;
 }
 
 GameScreen::~GameScreen() {

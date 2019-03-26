@@ -1,9 +1,10 @@
 #pragma once
 #include "SDL.h"
+#include "GameScreenManager.h"
 
 class GameScreen {
 public:
-	GameScreen(SDL_Renderer* renderer);
+	GameScreen(SDL_Renderer* renderer, GameScreenManager* _manager);
 	~GameScreen();
 
 	virtual void Render();
@@ -11,4 +12,5 @@ public:
 
 protected:
 	SDL_Renderer* mRenderer;
+	GameScreenManager* manager;
 };

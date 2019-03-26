@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-GameScreen_Level1::GameScreen_Level1(SDL_Renderer* renderer) : GameScreen(renderer) {
+GameScreen_Level1::GameScreen_Level1(SDL_Renderer* renderer, GameScreenManager* _manager) : GameScreen(renderer, _manager) {
 	SetUpLevel();
 	//mLevelMap = NULL;
 

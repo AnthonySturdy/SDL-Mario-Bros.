@@ -15,7 +15,7 @@
 
 class GameScreen_LevelEditor : public GameScreen {
 public:
-	GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY);
+	GameScreen_LevelEditor(SDL_Renderer* renderer, int _mapSizeX, int _mapSizeY, GameScreenManager* _manager);
 	~GameScreen_LevelEditor();
 
 	void Render();
