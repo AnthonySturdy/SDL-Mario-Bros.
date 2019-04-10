@@ -36,13 +36,6 @@ bool GameScreen_MainMenu::SetUpLevel() {
 	}
 	marioLocation = Rect2D(118, SCREEN_HEIGHT - 48);
 
-	/*bushSourceRects.push_back(Rect2D(128, 128, 16, 16));
-	bushSourceRects.push_back(Rect2D(144, 128, 16, 16));
-	bushSourceRects.push_back(Rect2D(160, 128, 16, 16));
-	bushSourceRects.push_back(Rect2D(128, 144, 16, 16));
-	bushSourceRects.push_back(Rect2D(144, 144, 16, 16));
-	bushSourceRects.push_back(Rect2D(160, 144, 16, 16));*/
-
 	//Load UI
 	marioText = new TextElement("Mario", fontTexture, Rect2D(65, 15), mRenderer);
 	scoreText = new TextElement("000000", fontTexture, Rect2D(65, 25), mRenderer);
@@ -168,7 +161,7 @@ void GameScreen_MainMenu::Update(float deltaTime, SDL_Event e) {
 					break;
 				case 1:
 					//Clicked Custom Level
-					
+					manager->ChangeScreen(SCREENS::SCREEN_CUSTOM_LEVEL);
 					break;
 				case 2:
 					//Clicked Level Editor

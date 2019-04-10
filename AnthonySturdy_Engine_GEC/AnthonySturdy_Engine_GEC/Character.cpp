@@ -23,8 +23,8 @@ void Character::Render() {
 
 void Character::Update(float deltaTime, SDL_Event e) {
 
-	int centralXPosition =	(int)(mPosition.x + (mTexture->GetWidth()*0.5f)) / TILE_SIZE;
-	int footPosition =		(int)(mPosition.y + mTexture->GetHeight()) / TILE_SIZE;
+	int centralXPosition =	(int)(mPosition.x + (mTexture->GetWidth()*0.5f)) / TILE_SIZE / SCREEN_SCALE;
+	int footPosition =		(int)(mPosition.y + mTexture->GetHeight()) / TILE_SIZE / SCREEN_SCALE;
 
 	if (mCurrentLevelMap->GetTileAt(centralXPosition, footPosition) == 0) {
 		AddGravity(deltaTime);
