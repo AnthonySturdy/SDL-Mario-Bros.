@@ -4,6 +4,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Entity.h"
+#include "Commons.h"
 
 #include <vector>
 #include <fstream>
@@ -21,6 +22,8 @@ private:
 	void SetUpLevel();
 
 	Entity* tempPlayer;
+
+	int halfScreen = SCREEN_WIDTH / 2;
 
 	//Map
 	int mapSizeX, mapSizeY;

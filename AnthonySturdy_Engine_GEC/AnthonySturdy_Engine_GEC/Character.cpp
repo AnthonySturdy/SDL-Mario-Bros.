@@ -72,6 +72,6 @@ void Character::Jump() {
 }
 
 void Character::AddGravity(float deltaTime) {
-	mPosition.y += GRAVITY_SPEED * deltaTime;
+	mPosition.y += GRAVITY_SPEED_LEVEL1 * deltaTime;
 	mCanJump = false;
 }

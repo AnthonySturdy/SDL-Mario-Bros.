@@ -14,7 +14,8 @@
 #define		MAP_WIDTH					16
 #define		MAP_HEIGHT					13
 #define		TILE_SIZE					16
-#define		GRAVITY_SPEED				250.0f
+#define		GRAVITY_SPEED_LEVEL1		250.0f
+#define		GRAVITY_SPEED				-4
 
 #define		SCREENSHAKE_DURATION		0.25f
 

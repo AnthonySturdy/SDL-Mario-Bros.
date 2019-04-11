@@ -13,7 +13,7 @@ GameScreen_CustomLevel::~GameScreen_CustomLevel() {
 
 void GameScreen_CustomLevel::SetUpLevel() {
 	if (!ReadMapFromFile("LevelMap.gec")) {
-		std::cout << "Map file doesn't exist! Go to level editor to fix this." << std::endl;
+		std::cout << "Map file doesn't exist! Go to level editor and save to fix this." << std::endl;
 	}
 
 	texture_tileset = new Texture2D(mRenderer);
@@ -31,7 +31,7 @@ void GameScreen_CustomLevel::SetUpLevel() {
 		}
 	}
 
-	tempPlayer = new Entity(mRenderer, Vector2D(100, 100), "Images/Mario.png", 3.0f, 2.5f, 3.5f);
+	tempPlayer = new Entity(mRenderer, Vector2D(3000, SCREEN_HEIGHT-48), "Images/small_mario.png", 180.0f, 0.7f, 8.0f, 350);
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -41,22 +41,34 @@ void GameScreen_CustomLevel::Render() {
 	SDL_RenderFillRect(mRenderer, &backgroundRect);
 	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
 
+	//Calculate camera offset
+	int cameraOffsetX;
+	if (tempPlayer->GetPosition().x - halfScreen < 0) {
+		cameraOffsetX = halfScreen - abs(tempPlayer->GetPosition().x - halfScreen);
+	} else if (tempPlayer->GetPosition().x + halfScreen > mapSizeX * TILE_SIZE) {
+		cameraOffsetX = halfScreen + (tempPlayer->GetPosition().x + halfScreen) - (mapSizeX * TILE_SIZE);
+	} else {
+		cameraOffsetX = (SCREEN_WIDTH / 2);
+	}
+
 	//Draw Tiles
 	for (int i = 0; i < levelTiles.size(); i++) {
 		if (levelTiles[i]->sprite != SPRITE_CLEAR) {
 			SDL_Rect src = { tileset[levelTiles[i]->sprite]->x, tileset[levelTiles[i]->sprite]->y, tileset[levelTiles[i]->sprite]->w, tileset[levelTiles[i]->sprite]->h };
-			SDL_Rect dest = { levelTiles[i]->rect.x, levelTiles[i]->rect.y, levelTiles[i]->rect.w, levelTiles[i]->rect.h };
+			SDL_Rect dest = { levelTiles[i]->rect.x - tempPlayer->GetPosition().x + cameraOffsetX, levelTiles[i]->rect.y, levelTiles[i]->rect.w, levelTiles[i]->rect.h };
 
 			texture_tileset->Render(src, dest, SDL_FLIP_NONE);
 		}
 	}
 
-	tempPlayer->Render();
+	tempPlayer->Render(Vector2D(cameraOffsetX, 0));	//The Y position in this isn't used at the moment as there is only X scrolling
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
+	tempPlayer->Update(deltaTime, e);
+
 	switch (e.type) {
-		//Key Down Events
+	//Key Down Events
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:
@@ -67,10 +79,14 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 			tempPlayer->SetMoveLeft(false);
 			tempPlayer->SetMoveRight(true);
 			break;
+		case SDLK_UP:
+			if(!tempPlayer->GetIsJumping())
+				tempPlayer->Jump();
+			break;
 		}
 		break;
 
-		//Key Up Events
+	//Key Up Events
 	case SDL_KEYUP:
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:
@@ -83,8 +99,6 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		break;
 
 	}
-
-	tempPlayer->Update(deltaTime, e);
 }
 
 bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {

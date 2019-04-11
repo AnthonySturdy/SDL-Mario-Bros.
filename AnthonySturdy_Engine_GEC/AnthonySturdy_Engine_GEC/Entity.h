@@ -20,14 +20,21 @@ protected:
 	bool isMovingLeft;
 	bool isMovingRight;
 	float movementSpeed;
+	bool isJumping;
+	float jumpHeight;
+	float gravityMultiplier = 1.5f;
 
 public:
-	Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed);
+	Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed, float _jumpHeight);
 	~Entity();
 
 	virtual void Update(float deltaTime, SDL_Event e);
-	virtual void Render();
+	virtual void Render(Vector2D pos);
 
 	void SetMoveLeft(bool val) { isMovingLeft = val; }
 	void SetMoveRight(bool val) { isMovingRight = val; }
+	void Jump() { velocity.y -= jumpHeight; isJumping = true; }
+
+	bool GetIsJumping() { return isJumping; }
+	Vector2D GetPosition() { return position; }
 };
