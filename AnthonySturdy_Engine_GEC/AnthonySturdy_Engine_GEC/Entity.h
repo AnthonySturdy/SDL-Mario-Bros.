@@ -5,6 +5,7 @@
 #include "Texture2D.h"
 
 #include <string>
+#include <iostream>
 
 class Entity {
 protected:

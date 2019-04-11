@@ -25,7 +25,7 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 	if (isMovingLeft) {
 		velocity.x -= deltaTime * accelerationSpeed;
 		if (abs(velocity.x) > movementSpeed) {
-			velocity.x = movementSpeed;
+			velocity.x = -movementSpeed;
 		}
 
 	} else if (isMovingRight) {
@@ -34,7 +34,14 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 			velocity.x = movementSpeed;
 		}
 
+	} else {
+		if (velocity.x > 0.1f || velocity.x < -0.1f)
+			velocity.x += (velocity.x > 0 ? -decelerationSpeed : decelerationSpeed) * deltaTime;
+		else
+			velocity.x = 0;
 	}
+
+	std::cout << velocity.x << std::endl;
 
 	position.x += velocity.x;
 	position.y += velocity.y;

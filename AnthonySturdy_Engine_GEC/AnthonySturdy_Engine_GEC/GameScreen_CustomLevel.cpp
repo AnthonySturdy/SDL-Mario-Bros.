@@ -31,7 +31,7 @@ void GameScreen_CustomLevel::SetUpLevel() {
 		}
 	}
 
-	tempPlayer = new Entity(mRenderer, Vector2D(100, 100), "Images/Mario.png", 3.0f, 1.0f, 1.0f);
+	tempPlayer = new Entity(mRenderer, Vector2D(100, 100), "Images/Mario.png", 3.0f, 2.5f, 3.5f);
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -83,6 +83,8 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		break;
 
 	}
+
+	tempPlayer->Update(deltaTime, e);
 }
 
 bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {
