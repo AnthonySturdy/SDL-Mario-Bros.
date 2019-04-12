@@ -1,3 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Project language was showing as C, not C++.
 AnthonySturdy_Engine_GEC/AnthonySturdy_Engine_GEC/SDL/* linguist-vendored
