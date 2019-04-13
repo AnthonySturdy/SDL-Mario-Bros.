@@ -54,7 +54,7 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 		if (velocity.x > 10.0f || velocity.x < -10.0f)
 			velocity.x += (velocity.x > 0 ? -decelerationSpeed : decelerationSpeed);
 		else
-			velocity.x = 0;	//Snap velocity to 0 if gets to small amount
+			velocity.x = 0;	//Snap velocity to 0 if gets too small
 	}
 
 	if (velocity.y > 0) {
@@ -71,13 +71,26 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 		velocity.y -= GRAVITY_SPEED;
 	}
 
-	//std::cout << "X: " << velocity.x << ", Y: " << velocity.y << std::endl;
-	std::cout << isJumping << std::endl;
-
 	position.x += velocity.x * deltaTime;
 	position.y += velocity.y * deltaTime;
+
+	//After everything, set collisions to false (if still colliding, will be set to true before this is called)
+	isCollidingDown = isCollidingUp = isCollidingLeft = isCollidingRight = false;
 }
 
 void Entity::Render(Vector2D pos) {
 	texture->Render(Vector2D(pos.x, position.y), SDL_FLIP_NONE);
+}
+
+void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY) {
+	//Called when from gamescreen player is collding. Check surrounding tiles
+
+	int x = round(position.x / TILE_SIZE);
+	int y = round((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
+
+	std::cout << "X: " << x << "\tY: " << y << "\tSPR: " << (*map)[y * mapSizeX + x]->sprite << std::endl;
+
+	/*if ((*map)[(int)(position.y / 16) * mapSizeX + (int)(position.x / 16)]) {
+
+	}*/
 }

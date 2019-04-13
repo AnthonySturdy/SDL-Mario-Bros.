@@ -6,6 +6,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 class Entity {
 protected:
@@ -24,6 +25,8 @@ protected:
 	float jumpHeight;
 	float gravityMultiplier = 1.5f;
 
+	bool isCollidingDown, isCollidingUp, isCollidingLeft, isCollidingRight;
+
 public:
 	Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed, float _jumpHeight);
 	~Entity();
@@ -35,6 +38,9 @@ public:
 	void SetMoveRight(bool val) { isMovingRight = val; }
 	void Jump() { velocity.y -= jumpHeight; isJumping = true; }
 
+	void AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY);
+
 	bool GetIsJumping() { return isJumping; }
 	Vector2D GetPosition() { return position; }
+	Rect2D GetCollisionRect() { return collisionRect; }
 };
