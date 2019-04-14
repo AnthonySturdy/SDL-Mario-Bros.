@@ -62,16 +62,6 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 		velocity.y -= GRAVITY_SPEED * gravityMultiplier;
 	} 
 
-	//if (position.y > SCREEN_HEIGHT - 48) {
-	//	//If colliding
-	//	velocity.y = 0;
-	//	position.y = SCREEN_HEIGHT - 48;
-	//	isJumping = false;
-	//} else {
-	//	//If not colliding
-	//	velocity.y -= GRAVITY_SPEED;
-	//}
-
 	//Collision
 	if (isCollidingDown) {
 		//If is going down (So not jumping)
@@ -122,8 +112,6 @@ void Entity::Render(Vector2D pos) {
 void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY) {
 	//Called when from gamescreen player is collding. Check surrounding tiles
 
-	//TODO: Figure out how to only have one collision at a time when there's only supposed to be one collision
-
 	int x = round(position.x / TILE_SIZE);
 	int y = round((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
 
@@ -163,5 +151,28 @@ void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX
 	std::cout << "\t" << position.x << "\t" << position.y;
 
 	std::cout << std::endl;
+
+}
+
+void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
+	isCollidingUp = (r1.x + (TILE_SIZE / 2) < r2.x + r2.w &&
+						r1.x + r1.w - (TILE_SIZE / 2) > r2.x &&
+						r1.y < r2.y + r2.h &&
+						r1.y + r1.h > r2.y);
+
+	isCollidingDown = (r1.x + (TILE_SIZE / 2) < r2.x + r2.w &&
+						r1.x + r1.w - (TILE_SIZE / 2) > r2.x &&
+						r1.y + (TILE_SIZE) < r2.y + r2.h &&
+						r1.y + r1.h > r2.y);
+
+	isCollidingLeft = (r1.x < r2.x + r2.w &&
+						r1.x + r1.w > r2.x &&
+						r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
+						r1.y + r1.h - (TILE_SIZE / 2) > r2.y);
+
+	isCollidingRight = (r1.x + (TILE_SIZE) < r2.x + r2.w &&
+						r1.x + r1.w > r2.x &&
+						r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
+						r1.y + r1.h - (TILE_SIZE / 2) > r2.y);
 
 }

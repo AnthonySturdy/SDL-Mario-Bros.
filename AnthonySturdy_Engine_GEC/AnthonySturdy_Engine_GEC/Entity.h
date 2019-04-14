@@ -40,6 +40,8 @@ public:
 
 	void AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY);
 
+	void RectCollisionCheck(Rect2D r1, Rect2D r2);
+
 	bool GetIsJumping() { return isJumping; }
 	Vector2D GetPosition() { return position; }
 	Rect2D GetCollisionRect() { return collisionRect; }

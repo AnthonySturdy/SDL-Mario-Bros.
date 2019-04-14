@@ -98,11 +98,11 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 
 	}
 
-	//Check player collision. TODO: Add another for loop inside this for loop, which checks every entity
+	//Check player collision. TODO: Add another for loop inside this for loop, which checks every entity (not just tempPlayer)
 	for (int i = 0; i < levelTiles.size(); i++) {
-		if (IsTileCollidable(levelTiles[i]->sprite))
-			if (RectCollisionCheck(levelTiles[i]->rect, tempPlayer->GetCollisionRect()))
-				tempPlayer->AssignCollisionVariables(&levelTiles, mapSizeX, mapSizeY);
+		if (levelTiles[i]->isCollidable) {
+			tempPlayer->RectCollisionCheck(tempPlayer->GetCollisionRect(), levelTiles[i]->rect);
+		}
 	}
 
 	tempPlayer->Update(deltaTime, e);
@@ -127,7 +127,6 @@ bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {
 	return true;
 }
 
-//TODO: Move this check to the entity class
 bool GameScreen_CustomLevel::IsTileCollidable(unsigned short sprite) {
 	switch (sprite) {
 	//Non-collidable sprites return false
@@ -152,12 +151,4 @@ bool GameScreen_CustomLevel::IsTileCollidable(unsigned short sprite) {
 	}
 
 	return true;
-}
-
-bool GameScreen_CustomLevel::RectCollisionCheck(Rect2D r1, Rect2D r2) {
-	//Returns true of colliding
-	return (r1.x < r2.x + r2.w &&
-		r1.x + r1.w > r2.x &&
-		r1.y < r2.y + r2.h &&
-		r1.y + r1.h > r2.y);
 }

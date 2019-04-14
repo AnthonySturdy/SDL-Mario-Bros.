@@ -81,5 +81,4 @@ private:
 	std::vector<LevelTile*> levelTiles;
 	bool IsTileCollidable(unsigned short sprite);
 
-	bool RectCollisionCheck(Rect2D r1, Rect2D r2);
 };
