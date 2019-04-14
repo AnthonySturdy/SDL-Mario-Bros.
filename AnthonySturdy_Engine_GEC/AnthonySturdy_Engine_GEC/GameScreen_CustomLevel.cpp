@@ -25,13 +25,13 @@ void GameScreen_CustomLevel::SetUpLevel() {
 	}
 
 	//Create tiles
-	for (int x = 0; x < mapSizeX; x++) {
-		for (int y = 0; y < mapSizeY; y++) {
+	for (int y = 0; y < mapSizeY; y++) {
+		for (int x = 0; x < mapSizeX; x++) {
 			levelTiles.push_back(new LevelTile(Rect2D(x * TILE_SIZE, (y * TILE_SIZE) + (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE)), TILE_SIZE, TILE_SIZE), map[y * mapSizeX + x], IsTileCollidable(map[y * mapSizeX + x])));
 		}
 	}
 
-	tempPlayer = new Entity(mRenderer, Vector2D(3000, SCREEN_HEIGHT-48), "Images/small_mario.png", 180.0f, 0.7f, 8.0f, 350);
+	tempPlayer = new Entity(mRenderer, Vector2D(160, SCREEN_HEIGHT-48), "Images/small_mario.png", 180.0f, 0.7f, 8.0f, 350);
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -127,6 +127,7 @@ bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {
 	return true;
 }
 
+//TODO: Move this check to the entity class
 bool GameScreen_CustomLevel::IsTileCollidable(unsigned short sprite) {
 	switch (sprite) {
 	//Non-collidable sprites return false

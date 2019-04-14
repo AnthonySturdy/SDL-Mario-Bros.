@@ -57,18 +57,54 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 			velocity.x = 0;	//Snap velocity to 0 if gets too small
 	}
 
-	if (velocity.y > 0) {
-		//If falling, fall faster
+	//If falling, fall faster
+	if (velocity.y > 0 && isJumping == true) {
 		velocity.y -= GRAVITY_SPEED * gravityMultiplier;
 	} 
 
-	if (position.y > SCREEN_HEIGHT - 48) {
-		//if colliding
-		velocity.y = 0;
-		position.y = SCREEN_HEIGHT - 48;
-		isJumping = false;
+	//if (position.y > SCREEN_HEIGHT - 48) {
+	//	//If colliding
+	//	velocity.y = 0;
+	//	position.y = SCREEN_HEIGHT - 48;
+	//	isJumping = false;
+	//} else {
+	//	//If not colliding
+	//	velocity.y -= GRAVITY_SPEED;
+	//}
+
+	//Collision
+	if (isCollidingDown) {
+		//If is going down (So not jumping)
+		if (velocity.y >= 0) {
+			velocity.y = 0;
+			isJumping = false;
+			position.y -= (int)position.y % TILE_SIZE;
+		} 
+
 	} else {
+		//If not colliding below, apply gravity
 		velocity.y -= GRAVITY_SPEED;
+		isJumping = true;
+	}
+	if (isCollidingUp) {
+		//If is going up (Jumping)
+		if (velocity.y < 0) {
+			velocity.y = 0;
+			//position.y += (int)position.y % TILE_SIZE;
+		}
+	}
+
+	if (isCollidingLeft) {
+		//If is going left (toward wall)
+		if (velocity.x < 0) {
+			velocity.x = 0;
+		}
+	}
+	if (isCollidingRight) {
+		//If is going left (toward wall)
+		if (velocity.x > 0) {
+			velocity.x = 0;
+		}
 	}
 
 	position.x += velocity.x * deltaTime;
@@ -85,12 +121,43 @@ void Entity::Render(Vector2D pos) {
 void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY) {
 	//Called when from gamescreen player is collding. Check surrounding tiles
 
+	//TODO: Figure out how to only have one collision at a time when there's only supposed to be one collision
+
 	int x = round(position.x / TILE_SIZE);
 	int y = round((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
 
-	std::cout << "X: " << x << "\tY: " << y << "\tSPR: " << (*map)[y * mapSizeX + x]->sprite << std::endl;
+	//Colliding below check
+	if ((*map)[(y + 1) * mapSizeX + x]->sprite) {
+		isCollidingDown = true;
+		std::cout << "DOWN";
+	}
 
-	/*if ((*map)[(int)(position.y / 16) * mapSizeX + (int)(position.x / 16)]) {
+	std::cout << "\t";
 
-	}*/
+	//Colliding right check
+	if ((*map)[y * mapSizeX + (x + 1)]->sprite) {
+		isCollidingRight = true;
+		std::cout << "RIGHT";
+	}
+
+	std::cout << "\t";
+
+	//Colliding left check
+	if ((*map)[y * mapSizeX + (x)]->sprite) {
+		isCollidingLeft = true;
+		std::cout << "LEFT";
+	}
+
+	std::cout << "\t";
+
+	//Colliding above check
+	if ((*map)[(y) * mapSizeX + x]->sprite) {
+		isCollidingUp = true;
+		std::cout << "UP";
+	}
+
+	
+
+	std::cout << std::endl;
+
 }
