@@ -90,20 +90,21 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 		//If is going up (Jumping)
 		if (velocity.y < 0) {
 			velocity.y = 0;
-			//position.y += (int)position.y % TILE_SIZE;
+			position.y += (int)position.y % TILE_SIZE;
 		}
 	}
 
 	if (isCollidingLeft) {
 		//If is going left (toward wall)
-		if (velocity.x < 0) {
+		if (velocity.x <= 0) {
 			velocity.x = 0;
 		}
 	}
 	if (isCollidingRight) {
 		//If is going left (toward wall)
-		if (velocity.x > 0) {
+		if (velocity.x >= 0) {
 			velocity.x = 0;
+			position.x -= (int)position.x % TILE_SIZE;
 		}
 	}
 
@@ -134,6 +135,9 @@ void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX
 
 	std::cout << "\t";
 
+	x = floor(position.x / TILE_SIZE);
+	y = floor((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
+
 	//Colliding right check
 	if ((*map)[y * mapSizeX + (x + 1)]->sprite) {
 		isCollidingRight = true;
@@ -156,7 +160,7 @@ void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX
 		std::cout << "UP";
 	}
 
-	
+	std::cout << "\t" << position.x << "\t" << position.y;
 
 	std::cout << std::endl;
 
