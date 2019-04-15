@@ -98,6 +98,8 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 
 	}
 
+	tempPlayer->RefreshCollisionRect();
+
 	//Check player collision. TODO: Add another for loop inside this for loop, which checks every entity (not just tempPlayer)
 	for (int i = 0; i < levelTiles.size(); i++) {
 		if (levelTiles[i]->isCollidable) {

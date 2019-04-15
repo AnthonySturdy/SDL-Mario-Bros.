@@ -20,8 +20,6 @@ Entity::~Entity() {
 }
 
 void Entity::Update(float deltaTime, SDL_Event e) {
-	collisionRect = Rect2D(position.x, position.y, texture->GetWidth(), texture->GetHeight());
-
 	//Movement
 	if (isMovingLeft) {
 		velocity.x -= accelerationSpeed;
@@ -65,7 +63,7 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 	//Collision
 	if (isCollidingDown) {
 		//If is going down (So not jumping)
-		if (velocity.y >= 0) {
+		if (velocity.y > 0) {
 			velocity.y = 0;
 			isJumping = false;
 			position.y -= (int)position.y % TILE_SIZE;
@@ -80,21 +78,19 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 		//If is going up (Jumping)
 		if (velocity.y < 0) {
 			velocity.y = 0;
-			position.y += (int)position.y % TILE_SIZE;
 		}
 	}
 
 	if (isCollidingLeft) {
 		//If is going left (toward wall)
-		if (velocity.x <= 0) {
+		if (velocity.x <= 0 && collideLeftRect.y != collideDownRect.y) {
 			velocity.x = 0;
 		}
 	}
 	if (isCollidingRight) {
 		//If is going left (toward wall)
-		if (velocity.x >= 0) {
+		if (velocity.x >= 0 && collideRightRect.y != collideDownRect.y) {
 			velocity.x = 0;
-			position.x -= (int)position.x % TILE_SIZE;
 		}
 	}
 
@@ -155,24 +151,48 @@ void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX
 }
 
 void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
-	isCollidingUp = (r1.x + (TILE_SIZE / 2) < r2.x + r2.w &&
-						r1.x + r1.w - (TILE_SIZE / 2) > r2.x &&
-						r1.y < r2.y + r2.h &&
-						r1.y + r1.h > r2.y);
+	if (r1.x + 1 < r2.x + r2.w &&
+		r1.x + r1.w - 1 > r2.x &&
+		r1.y < r2.y + r2.h &&
+		r1.y + r1.h - (TILE_SIZE / 2) > r2.y) {
+		//Up
+		isCollidingUp = true;
+		collideUpRect = r2;
+	} else {
+		collideUpRect = Rect2D(-999, -999, -999, -999);
+	}
 
-	isCollidingDown = (r1.x + (TILE_SIZE / 2) < r2.x + r2.w &&
-						r1.x + r1.w - (TILE_SIZE / 2) > r2.x &&
-						r1.y + (TILE_SIZE) < r2.y + r2.h &&
-						r1.y + r1.h > r2.y);
+	if (r1.x + 1 < r2.x + r2.w &&
+		r1.x + r1.w - 1> r2.x &&
+		r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
+		r1.y + r1.h > r2.y) {
+		//Down
+		isCollidingDown = true;
+		collideDownRect = r2;
+	} else {
+		collideUpRect = Rect2D(-999, -999, -999, -999);
+	}
 
-	isCollidingLeft = (r1.x < r2.x + r2.w &&
-						r1.x + r1.w > r2.x &&
-						r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
-						r1.y + r1.h - (TILE_SIZE / 2) > r2.y);
+	if (r1.x < r2.x + r2.w &&
+		r1.x + r1.w - (TILE_SIZE / 2) > r2.x &&
+		r1.y + 1 < r2.y + r2.h &&
+		r1.y + r1.h - 1 > r2.y) {
+		//Left
+		isCollidingLeft = true;
+		collideLeftRect = r2;
+	} else {
+		collideUpRect = Rect2D(-999, -999, -999, -999);
+	}
 
-	isCollidingRight = (r1.x + (TILE_SIZE) < r2.x + r2.w &&
-						r1.x + r1.w > r2.x &&
-						r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
-						r1.y + r1.h - (TILE_SIZE / 2) > r2.y);
+	if (r1.x + (TILE_SIZE / 2) < r2.x + r2.w &&
+		r1.x + r1.w > r2.x &&
+		r1.y + 1 < r2.y + r2.h &&
+		r1.y + r1.h - 1 > r2.y) {
+		//Right
+		isCollidingRight = true;
+		collideRightRect = r2;
+	} else {
+		collideUpRect = Rect2D(-999, -999, -999, -999);
+	}
 
 }

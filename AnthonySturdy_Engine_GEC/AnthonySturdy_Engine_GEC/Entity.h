@@ -23,9 +23,10 @@ protected:
 	float movementSpeed;
 	bool isJumping;
 	float jumpHeight;
-	float gravityMultiplier = 1.5f;
+	float gravityMultiplier = 1.85f;
 
 	bool isCollidingDown, isCollidingUp, isCollidingLeft, isCollidingRight;
+	Rect2D collideUpRect, collideDownRect, collideLeftRect, collideRightRect;
 
 public:
 	Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed, float _jumpHeight);
@@ -44,5 +45,6 @@ public:
 
 	bool GetIsJumping() { return isJumping; }
 	Vector2D GetPosition() { return position; }
+	void RefreshCollisionRect() { collisionRect = Rect2D(position.x, position.y, texture->GetWidth(), texture->GetHeight()); }
 	Rect2D GetCollisionRect() { return collisionRect; }
 };
