@@ -31,7 +31,13 @@ void GameScreen_CustomLevel::SetUpLevel() {
 		}
 	}
 
-	tempPlayer = new Entity(mRenderer, Vector2D(160, SCREEN_HEIGHT-48), "Images/small_mario.png", 180.0f, 0.7f, 8.0f, 350);
+	//Create entities
+	for (int y = 0; y < mapSizeY; y++) {
+		for (int x = 0; x < mapSizeX; x++) {
+			CreateEntity(entityMap[y * mapSizeX + x], x * TILE_SIZE, (y * TILE_SIZE) + (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE)));
+		}
+	}
+
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -43,10 +49,10 @@ void GameScreen_CustomLevel::Render() {
 
 	//Calculate camera offset
 	int cameraOffsetX;
-	if (tempPlayer->GetPosition().x - halfScreen < 0) {
-		cameraOffsetX = halfScreen - abs(tempPlayer->GetPosition().x - halfScreen);
-	} else if (tempPlayer->GetPosition().x + halfScreen > mapSizeX * TILE_SIZE) {
-		cameraOffsetX = halfScreen + (tempPlayer->GetPosition().x + halfScreen) - (mapSizeX * TILE_SIZE);
+	if (playerEntity->GetPosition().x - halfScreen < 0) {
+		cameraOffsetX = halfScreen - abs(playerEntity->GetPosition().x - halfScreen);
+	} else if (playerEntity->GetPosition().x + halfScreen > mapSizeX * TILE_SIZE) {
+		cameraOffsetX = halfScreen + (playerEntity->GetPosition().x + halfScreen) - (mapSizeX * TILE_SIZE);
 	} else {
 		cameraOffsetX = (SCREEN_WIDTH / 2);
 	}
@@ -55,13 +61,19 @@ void GameScreen_CustomLevel::Render() {
 	for (int i = 0; i < levelTiles.size(); i++) {
 		if (levelTiles[i]->sprite != SPRITE_CLEAR) {
 			SDL_Rect src = { tileset[levelTiles[i]->sprite]->x, tileset[levelTiles[i]->sprite]->y, tileset[levelTiles[i]->sprite]->w, tileset[levelTiles[i]->sprite]->h };
-			SDL_Rect dest = { levelTiles[i]->rect.x - tempPlayer->GetPosition().x + cameraOffsetX, levelTiles[i]->rect.y, levelTiles[i]->rect.w, levelTiles[i]->rect.h };
+			SDL_Rect dest = { levelTiles[i]->rect.x - playerEntity->GetPosition().x + cameraOffsetX, levelTiles[i]->rect.y, levelTiles[i]->rect.w, levelTiles[i]->rect.h };
 
 			texture_tileset->Render(src, dest, SDL_FLIP_NONE);
 		}
 	}
 
-	tempPlayer->Render(Vector2D(cameraOffsetX, 0));	//The Y position in this isn't used at the moment as there is only X scrolling
+	for (int i = 0; i < entities.size(); i++) {
+		if (entities[i] == playerEntity) {
+			entities[i]->Render(Vector2D(cameraOffsetX, 0));	//The Y position in this isn't used at the moment as there is only X scrolling
+		} else {
+			entities[i]->Render(Vector2D(entities[i]->GetPosition().x - playerEntity->GetPosition().x + cameraOffsetX, entities[i]->GetPosition().y));
+		}
+	}
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
@@ -70,16 +82,16 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {
 		case SDLK_UP:
-			if (!tempPlayer->GetIsJumping())
-				tempPlayer->Jump();
+			if (!playerEntity->GetIsJumping())
+				playerEntity->Jump(350);
 			break;
 		case SDLK_LEFT:
-			tempPlayer->SetMoveLeft(true);
-			tempPlayer->SetMoveRight(false);
+			playerEntity->SetMoveLeft(true);
+			playerEntity->SetMoveRight(false);
 			break;
 		case SDLK_RIGHT:
-			tempPlayer->SetMoveLeft(false);
-			tempPlayer->SetMoveRight(true);
+			playerEntity->SetMoveLeft(false);
+			playerEntity->SetMoveRight(true);
 			break;
 		}
 		break;
@@ -88,26 +100,41 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	case SDL_KEYUP:
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:
-			tempPlayer->SetMoveLeft(false);
+			playerEntity->SetMoveLeft(false);
 			break;
 		case SDLK_RIGHT:
-			tempPlayer->SetMoveRight(false);
+			playerEntity->SetMoveRight(false);
 			break;
 		}
 		break;
 
 	}
 
-	tempPlayer->RefreshCollisionRect();
-
-	//Check player collision. TODO: Add another for loop inside this for loop, which checks every entity (not just tempPlayer)
-	for (int i = 0; i < levelTiles.size(); i++) {
-		if (levelTiles[i]->isCollidable) {
-			tempPlayer->RectCollisionCheck(tempPlayer->GetCollisionRect(), levelTiles[i]->rect);
+	//Refresh entities collision rects (before we check for collision)
+	for (int j = 0; j < entities.size(); j++) {
+		entities[j]->RefreshCollisionRect();
+	}
+	//Check entity tile collision
+	for (int j = 0; j < entities.size(); j++) {
+		for (int i = 0; i < levelTiles.size(); i++) {
+			if (levelTiles[i]->isCollidable) {
+				entities[j]->RectCollisionCheck(entities[j]->GetCollisionRect(), levelTiles[i]->rect);
+			}
 		}
 	}
-
-	tempPlayer->Update(deltaTime, e);
+	//Check entity on entity collision
+	for (int i = 0; i < entities.size(); i++) {
+		for (int j = 0; j < entities.size(); j++) {
+			//Don't check collision on itself
+			if (entities[i] != entities[j]) {
+				entities[i]->RectCollisionCheck(entities[i]->GetCollisionRect(), entities[j]->GetCollisionRect());
+			}
+		}
+	}
+	//Call entities Update()
+	for (int j = 0; j < entities.size(); j++) {
+		entities[j]->Update(deltaTime, e);
+	}
 }
 
 bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {
@@ -153,4 +180,26 @@ bool GameScreen_CustomLevel::IsTileCollidable(unsigned short sprite) {
 	}
 
 	return true;
+}
+
+void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
+	switch (sprite) {
+	case SPRITE_ENTITY_MARIO_LEVEL_START: {
+		Entity* e = new Entity(mRenderer, Vector2D(x, y), "Images/small_mario.png", 180.0f, 0.7f, 8.0f);
+		entities.push_back(e);
+		if (playerEntity == nullptr) {
+			playerEntity = e;
+		} else {
+			//TODO: Add message to alert player there are 2 player objects in the scene
+		}
+	}
+	break;
+
+	case SPRITE_ENTITY_GOOMBA: {
+		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/Goomba.png", 60, 999, 999);
+		entities.push_back(e);
+	}
+	break;
+
+	}
 }

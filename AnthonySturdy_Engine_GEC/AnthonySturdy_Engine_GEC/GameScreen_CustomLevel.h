@@ -4,6 +4,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Entity.h"
+#include "Entity_Goomba.h"
 #include "Commons.h"
 
 #include <vector>
@@ -20,8 +21,6 @@ public:
 
 private:
 	void SetUpLevel();
-
-	Entity* tempPlayer;
 
 	int halfScreen = SCREEN_WIDTH / 2;
 
@@ -80,5 +79,9 @@ private:
 	std::vector<Rect2D*> tileset;
 	std::vector<LevelTile*> levelTiles;
 	bool IsTileCollidable(unsigned short sprite);
+
+	std::vector<Entity*> entities;
+	Entity* playerEntity;
+	void CreateEntity(unsigned short sprite, int x, int y);
 
 };

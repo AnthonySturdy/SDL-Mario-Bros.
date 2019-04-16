@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 
-Entity::Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed, float _jumpHeight) {
+Entity::Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed) {
 	mRenderer = renderer;
 	texture = new Texture2D(renderer);
 	texture->LoadFromFile(texturePath);
@@ -10,7 +10,6 @@ Entity::Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string textu
 	movementSpeed = _movementSpeed;
 	accelerationSpeed = _accelerationSpeed;
 	decelerationSpeed = _decelerationSpeed;
-	jumpHeight = _jumpHeight;
 
 	collisionRect = Rect2D(position.x, position.y, texture->GetWidth(), texture->GetHeight());
 }
@@ -103,51 +102,6 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 
 void Entity::Render(Vector2D pos) {
 	texture->Render(Vector2D(pos.x, position.y), SDL_FLIP_NONE);
-}
-
-void Entity::AssignCollisionVariables(std::vector<LevelTile*>* map, int mapSizeX, int mapSizeY) {
-	//Called when from gamescreen player is collding. Check surrounding tiles
-
-	int x = round(position.x / TILE_SIZE);
-	int y = round((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
-
-	//Colliding below check
-	if ((*map)[(y + 1) * mapSizeX + x]->sprite) {
-		isCollidingDown = true;
-		std::cout << "DOWN";
-	}
-
-	std::cout << "\t";
-
-	x = floor(position.x / TILE_SIZE);
-	y = floor((position.y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE);
-
-	//Colliding right check
-	if ((*map)[y * mapSizeX + (x + 1)]->sprite) {
-		isCollidingRight = true;
-		std::cout << "RIGHT";
-	}
-
-	std::cout << "\t";
-
-	//Colliding left check
-	if ((*map)[y * mapSizeX + (x)]->sprite) {
-		isCollidingLeft = true;
-		std::cout << "LEFT";
-	}
-
-	std::cout << "\t";
-
-	//Colliding above check
-	if ((*map)[(y) * mapSizeX + x]->sprite) {
-		isCollidingUp = true;
-		std::cout << "UP";
-	}
-
-	std::cout << "\t" << position.x << "\t" << position.y;
-
-	std::cout << std::endl;
-
 }
 
 void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {

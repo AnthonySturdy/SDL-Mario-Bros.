@@ -131,6 +131,7 @@
     <ClCompile Include="Character_Mario.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Entity_Goomba.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreen_CustomLevel.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Commons.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Entity_Goomba.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="GameScreen_CustomLevel.h" />
