@@ -12,6 +12,7 @@ void Entity_Goomba::Update(float deltaTime, SDL_Event e) {
 	if (isCollidingLeft) {
 		isMovingLeft = false;
 		isMovingRight = true;
+
 	} else if (isCollidingRight) {
 		isMovingLeft = true;
 		isMovingRight = false;

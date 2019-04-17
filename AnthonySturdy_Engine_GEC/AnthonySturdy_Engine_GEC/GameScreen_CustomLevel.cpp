@@ -74,16 +74,46 @@ void GameScreen_CustomLevel::Render() {
 			entities[i]->Render(Vector2D(entities[i]->GetPosition().x - playerEntity->GetPosition().x + cameraOffsetX, entities[i]->GetPosition().y));
 		}
 	}
+
+
+
+
+	if (debugDraw) {
+		
+		//Render collision check tiles
+		for (int j = 0; j < entities.size(); j++) {
+			//Check collision only on surrounding tiles, checking all tiles drops fps dramastically
+			std::vector<LevelTile*> surroundingTiles = GetSurroundTiles(round((entities[j]->GetCollisionRect().x) / TILE_SIZE),
+																		round((entities[j]->GetCollisionRect().y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE));
+
+			for (int i = 0; i < surroundingTiles.size(); i++) {
+				SDL_Rect r = { surroundingTiles[i]->rect.x - playerEntity->GetPosition().x + cameraOffsetX, surroundingTiles[i]->rect.y, surroundingTiles[i]->rect.w, surroundingTiles[i]->rect.h };
+				SDL_SetRenderDrawColor(mRenderer, 255, 0, 255, 255);
+				SDL_RenderDrawRect(mRenderer, &r);
+			}
+
+			SDL_Rect r = { entities[j]->GetCollisionRect().x - playerEntity->GetPosition().x + cameraOffsetX, entities[j]->GetCollisionRect().y, entities[j]->GetCollisionRect().w, entities[j]->GetCollisionRect().h };
+			SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
+			SDL_RenderDrawRect(mRenderer, &r);
+		}
+
+
+
+		SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+
+	}
+	
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
+	//Input
 	switch (e.type) {
 	//Key Down Events
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {
 		case SDLK_UP:
 			if (!playerEntity->GetIsJumping())
-				playerEntity->Jump(350);
+				playerEntity->Jump(425);
 			break;
 		case SDLK_LEFT:
 			playerEntity->SetMoveLeft(true);
@@ -94,6 +124,7 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 			playerEntity->SetMoveRight(true);
 			break;
 		}
+	
 		break;
 
 	//Key Up Events
@@ -105,6 +136,9 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		case SDLK_RIGHT:
 			playerEntity->SetMoveRight(false);
 			break;
+		case SDLK_p:
+			debugDraw = !debugDraw;
+			break;
 		}
 		break;
 
@@ -114,11 +148,15 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	for (int j = 0; j < entities.size(); j++) {
 		entities[j]->RefreshCollisionRect();
 	}
-	//Check entity tile collision
+	//Check entity on tile collision
 	for (int j = 0; j < entities.size(); j++) {
-		for (int i = 0; i < levelTiles.size(); i++) {
-			if (levelTiles[i]->isCollidable) {
-				entities[j]->RectCollisionCheck(entities[j]->GetCollisionRect(), levelTiles[i]->rect);
+		//Check collision only on surrounding tiles, checking all tiles drops fps dramastically
+		std::vector<LevelTile*> surroundingTiles = GetSurroundTiles(floor((entities[j]->GetCollisionRect().x) / TILE_SIZE),
+																	floor((entities[j]->GetCollisionRect().y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE));
+
+		for (int i = 0; i < surroundingTiles.size(); i++) {
+			if (surroundingTiles[i]->isCollidable) {
+				entities[j]->RectCollisionCheck(entities[j]->GetCollisionRect(), surroundingTiles[i]->rect);
 			}
 		}
 	}
@@ -182,10 +220,64 @@ bool GameScreen_CustomLevel::IsTileCollidable(unsigned short sprite) {
 	return true;
 }
 
+std::vector<LevelTile*> GameScreen_CustomLevel::GetSurroundTiles(int x, int y) {
+	std::vector<LevelTile*> tiles;
+
+	//use .at() to access vector and try/catch so doesn't break if trying to check out of vector range
+	
+	try {
+		tiles.push_back(levelTiles.at((y)* mapSizeX + (x)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y - 1)* mapSizeX + (x)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y - 1)* mapSizeX + (x + 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y)* mapSizeX + (x + 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y + 1)* mapSizeX + (x + 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y + 1)* mapSizeX + (x)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y + 1)* mapSizeX + (x - 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y)* mapSizeX + (x - 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y - 1)* mapSizeX + (x - 1)));
+	} catch (...) {
+
+	}
+
+	return tiles;
+}
+
 void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 	switch (sprite) {
 	case SPRITE_ENTITY_MARIO_LEVEL_START: {
-		Entity* e = new Entity(mRenderer, Vector2D(x, y), "Images/small_mario.png", 180.0f, 0.7f, 8.0f);
+		Entity* e = new Entity(mRenderer, Vector2D(x, y), "Images/small_mario.png", 170.0f, 0.7, 8);
 		entities.push_back(e);
 		if (playerEntity == nullptr) {
 			playerEntity = e;
