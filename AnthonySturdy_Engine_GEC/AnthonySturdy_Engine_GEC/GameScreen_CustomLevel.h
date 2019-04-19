@@ -4,7 +4,9 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Entity.h"
+#include "Entity_Mario.h"
 #include "Entity_Goomba.h"
+#include "Entity_Koopa.h"
 #include "Commons.h"
 
 #include <vector>
@@ -38,6 +40,7 @@ private:
 
 	std::vector<Entity*> entities;
 	Entity* playerEntity;
+	Entity* playerCollidingEntity;
 	void CreateEntity(unsigned short sprite, int x, int y);
 
 };

@@ -15,6 +15,8 @@ protected:
 
 	Rect2D collisionRect;
 
+	bool isDead;
+
 	Vector2D position;
 	Vector2D velocity;
 	float accelerationSpeed, decelerationSpeed;
@@ -26,6 +28,7 @@ protected:
 
 	bool isCollidingDown, isCollidingUp, isCollidingLeft, isCollidingRight;
 	Rect2D collideUpRect, collideDownRect, collideLeftRect, collideRightRect;
+	Entity* collidingEntity;
 
 public:
 	Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed);
@@ -37,11 +40,16 @@ public:
 	void SetMoveLeft(bool val) { isMovingLeft = val; }
 	void SetMoveRight(bool val) { isMovingRight = val; }
 	void Jump(float jumpHeight) { velocity.y -= jumpHeight; isJumping = true; }
+	virtual void Die() { isDead = true; }
 
-	void RectCollisionCheck(Rect2D r1, Rect2D r2);
+	bool RectCollisionCheck(Rect2D r1, Rect2D r2);
 
 	bool GetIsJumping() { return isJumping; }
 	Vector2D GetPosition() { return position; }
 	void RefreshCollisionRect() { collisionRect = Rect2D(position.x, position.y, texture->GetWidth(), texture->GetHeight()); }
 	Rect2D GetCollisionRect() { return collisionRect; }
+	void SetCollidingEntity(Entity* e) { collidingEntity = e; }
+	bool GetIsDead() { return isDead; }
+
+	ENTITY_TYPE type = ENTITY_TYPE::ENTITY_DEFAULT;
 };

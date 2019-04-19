@@ -119,3 +119,10 @@ struct LevelTile {
 		isCollidable = collidable;
 	}
 };
+
+enum ENTITY_TYPE {
+	ENTITY_DEFAULT,
+	ENTITY_MARIO,
+	ENTITY_GOOMBA,
+	ENTITY_KOOPA
+};

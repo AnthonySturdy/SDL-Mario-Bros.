@@ -98,13 +98,16 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 
 	//After everything, set collisions to false (if still colliding, will be set to true before this is called)
 	isCollidingDown = isCollidingUp = isCollidingLeft = isCollidingRight = false;
+	collidingEntity = nullptr;
 }
 
 void Entity::Render(Vector2D pos) {
 	texture->Render(Vector2D(pos.x, position.y), SDL_FLIP_NONE);
 }
 
-void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
+bool Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
+	bool rVal = false;
+
 	if (r1.x + 1 < r2.x + r2.w &&
 		r1.x + r1.w - 1 > r2.x &&
 		r1.y < r2.y + r2.h &&
@@ -112,6 +115,7 @@ void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
 		//Up
 		isCollidingUp = true;
 		collideUpRect = r2;
+		rVal = true;
 	} else {
 		collideUpRect = Rect2D(-999, -999, -999, -999);
 	}
@@ -123,6 +127,7 @@ void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
 		//Down
 		isCollidingDown = true;
 		collideDownRect = r2;
+		rVal = true;
 	} else {
 		collideUpRect = Rect2D(-999, -999, -999, -999);
 	}
@@ -134,6 +139,7 @@ void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
 		//Left
 		isCollidingLeft = true;
 		collideLeftRect = r2;
+		rVal = true;
 	} else {
 		collideUpRect = Rect2D(-999, -999, -999, -999);
 	}
@@ -145,8 +151,10 @@ void Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
 		//Right
 		isCollidingRight = true;
 		collideRightRect = r2;
+		rVal = true;
 	} else {
 		collideUpRect = Rect2D(-999, -999, -999, -999);
 	}
 
+	return rVal;
 }

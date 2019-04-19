@@ -76,10 +76,7 @@ void GameScreen_CustomLevel::Render() {
 	}
 
 
-
-
 	if (debugDraw) {
-		
 		//Render collision check tiles
 		for (int j = 0; j < entities.size(); j++) {
 			//Check collision only on surrounding tiles, checking all tiles drops fps dramastically
@@ -144,6 +141,7 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 
 	}
 
+	//Start Collision
 	//Refresh entities collision rects (before we check for collision)
 	for (int j = 0; j < entities.size(); j++) {
 		entities[j]->RefreshCollisionRect();
@@ -165,13 +163,31 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		for (int j = 0; j < entities.size(); j++) {
 			//Don't check collision on itself
 			if (entities[i] != entities[j]) {
-				entities[i]->RectCollisionCheck(entities[i]->GetCollisionRect(), entities[j]->GetCollisionRect());
+				//If colliding with another entity
+				if (entities[i]->RectCollisionCheck(entities[i]->GetCollisionRect(), entities[j]->GetCollisionRect())) {
+					entities[i]->SetCollidingEntity(entities[j]);
+				}
 			}
 		}
 	}
+	//End Collision
+
 	//Call entities Update()
 	for (int j = 0; j < entities.size(); j++) {
 		entities[j]->Update(deltaTime, e);
+	}
+
+	//Delete enemies if dead
+	for (int i = 0; i < entities.size(); i++) {
+		if (entities[i]->GetIsDead()) {
+			if (entities[i]->type == ENTITY_TYPE::ENTITY_MARIO) {
+				manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
+			} else {
+				delete entities[i];
+				entities[i] = nullptr;
+				entities.erase(entities.begin() + i);
+			}
+		}
 	}
 }
 
@@ -277,7 +293,7 @@ std::vector<LevelTile*> GameScreen_CustomLevel::GetSurroundTiles(int x, int y) {
 void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 	switch (sprite) {
 	case SPRITE_ENTITY_MARIO_LEVEL_START: {
-		Entity* e = new Entity(mRenderer, Vector2D(x, y), "Images/small_mario.png", 170.0f, 0.7, 8);
+		Entity* e = new Entity_Mario(mRenderer, Vector2D(x, y), "Images/small_mario.png", 170.0f, 0.7, 8);
 		entities.push_back(e);
 		if (playerEntity == nullptr) {
 			playerEntity = e;
@@ -289,6 +305,12 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 
 	case SPRITE_ENTITY_GOOMBA: {
 		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/Goomba.png", 60, 999, 999);
+		entities.push_back(e);
+	}
+	break;
+
+	case SPRITE_ENTITY_KOOPA: {
+		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y), "Images/Goomba.png", 60, 999, 999);
 		entities.push_back(e);
 	}
 	break;
