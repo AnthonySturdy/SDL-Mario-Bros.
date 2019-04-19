@@ -13,7 +13,7 @@ void Entity_Mario::Update(float deltaTime, SDL_Event e) {
 	if (collidingEntity != nullptr) {
 		//If entity is below 
 		if (isCollidingDown) {
-			Jump(750);
+			Jump(300);
 			collidingEntity->Die();
 		}
 	}

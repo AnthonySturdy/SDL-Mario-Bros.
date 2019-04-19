@@ -287,6 +287,22 @@ std::vector<LevelTile*> GameScreen_CustomLevel::GetSurroundTiles(int x, int y) {
 
 	}
 
+	try {
+		tiles.push_back(levelTiles.at((y + 2)* mapSizeX + (x + 1)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y + 2)* mapSizeX + (x)));
+	} catch (...) {
+
+	}
+	try {
+		tiles.push_back(levelTiles.at((y + 2)* mapSizeX + (x - 1)));
+	} catch (...) {
+
+	}
+
 	return tiles;
 }
 
@@ -304,13 +320,13 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 	break;
 
 	case SPRITE_ENTITY_GOOMBA: {
-		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/Goomba.png", 60, 999, 999);
+		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/small_goomba.png", 60, 999, 999);
 		entities.push_back(e);
 	}
 	break;
 
 	case SPRITE_ENTITY_KOOPA: {
-		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y), "Images/Goomba.png", 60, 999, 999);
+		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y - 16), "Images/small_koopa.png", 60, 999, 999);
 		entities.push_back(e);
 	}
 	break;

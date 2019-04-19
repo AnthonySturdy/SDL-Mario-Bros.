@@ -12,7 +12,7 @@ class Entity {
 protected:
 	SDL_Renderer* mRenderer;
 	Texture2D* texture;
-
+	bool flipSprite = false;
 	Rect2D collisionRect;
 
 	bool isDead;
@@ -39,7 +39,7 @@ public:
 
 	void SetMoveLeft(bool val) { isMovingLeft = val; }
 	void SetMoveRight(bool val) { isMovingRight = val; }
-	void Jump(float jumpHeight) { velocity.y -= jumpHeight; isJumping = true; }
+	void Jump(float jumpHeight) { velocity.y = 0; velocity.y -= jumpHeight; isJumping = true; }
 	virtual void Die() { isDead = true; }
 
 	bool RectCollisionCheck(Rect2D r1, Rect2D r2);

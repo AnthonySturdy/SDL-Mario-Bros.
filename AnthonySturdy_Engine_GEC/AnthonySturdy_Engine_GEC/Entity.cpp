@@ -102,7 +102,11 @@ void Entity::Update(float deltaTime, SDL_Event e) {
 }
 
 void Entity::Render(Vector2D pos) {
-	texture->Render(Vector2D(pos.x, position.y), SDL_FLIP_NONE);
+	if (isMovingRight || isMovingLeft) {
+		flipSprite = !isMovingRight;
+	}
+	
+	texture->Render(Vector2D(pos.x, position.y), (flipSprite ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
 }
 
 bool Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
@@ -121,7 +125,7 @@ bool Entity::RectCollisionCheck(Rect2D r1, Rect2D r2) {
 	}
 
 	if (r1.x + 1 < r2.x + r2.w &&
-		r1.x + r1.w - 1> r2.x &&
+		r1.x + r1.w - 1 > r2.x &&
 		r1.y + (TILE_SIZE / 2) < r2.y + r2.h &&
 		r1.y + r1.h > r2.y) {
 		//Down

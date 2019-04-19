@@ -1,4 +1,4 @@
-﻿  Entity_Mario.cpp
+﻿  Entity_Koopa.cpp
 c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\commons.h(26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\commons.h(27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\anthony sturdy\documents\github\gec_mario_anthonysturdy\anthonysturdy_engine_gec\anthonysturdy_engine_gec\entity.h(49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
