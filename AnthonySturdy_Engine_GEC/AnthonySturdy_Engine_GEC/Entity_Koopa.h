@@ -4,10 +4,10 @@
 class Entity_Koopa : public Entity {
 private:
 	bool isHit = false;
-	Texture2D* normalTexture;
-	Texture2D* hitTexture;
-
 	int hitFrameDelay = 0; //Delay for when it can be hit again
+
+	Animation* walkAnimation;
+	Animation* hitAnimation;
 
 public:
 	Entity_Koopa(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed);

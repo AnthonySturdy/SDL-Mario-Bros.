@@ -4,6 +4,8 @@ Entity_Goomba::Entity_Goomba(SDL_Renderer* renderer, Vector2D startPosition, std
 	isMovingLeft = true;
 
 	type = ENTITY_TYPE::ENTITY_GOOMBA;
+
+	currentAnimation = new Animation(renderer, "Images/walk_goomba", 2, 0.2f);
 }
 
 Entity_Goomba::~Entity_Goomba() {

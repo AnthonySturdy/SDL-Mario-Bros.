@@ -309,7 +309,7 @@ std::vector<LevelTile*> GameScreen_CustomLevel::GetSurroundTiles(int x, int y) {
 void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 	switch (sprite) {
 	case SPRITE_ENTITY_MARIO_LEVEL_START: {
-		Entity* e = new Entity_Mario(mRenderer, Vector2D(x, y), "Images/small_mario.png", 170.0f, 0.7, 8);
+		Entity* e = new Entity_Mario(mRenderer, Vector2D(x, y), "Images/idle_mario/0.png", 170.0f, 0.7, 8);
 		entities.push_back(e);
 		if (playerEntity == nullptr) {
 			playerEntity = e;
@@ -320,13 +320,13 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 	break;
 
 	case SPRITE_ENTITY_GOOMBA: {
-		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/small_goomba.png", 60, 999, 999);
+		Entity* e = new Entity_Goomba(mRenderer, Vector2D(x, y), "Images/walk_goomba/0.png", 60, 999, 999);
 		entities.push_back(e);
 	}
 	break;
 
 	case SPRITE_ENTITY_KOOPA: {
-		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y - 16), "Images/small_koopa.png", 60, 999, 999);
+		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y - 16), "Images/walk_koopa/0.png", 60, 999, 999);
 		entities.push_back(e);
 	}
 	break;

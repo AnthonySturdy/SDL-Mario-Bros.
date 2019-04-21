@@ -3,9 +3,10 @@
 Entity_Koopa::Entity_Koopa(SDL_Renderer* renderer, Vector2D startPosition, std::string texturePath, float _movementSpeed, float _accelerationSpeed, float _decelerationSpeed) : Entity(renderer, startPosition, texturePath, _movementSpeed, _accelerationSpeed, _decelerationSpeed) {
 	isMovingLeft = true;
 
-	normalTexture = texture;
-	hitTexture = new Texture2D(renderer);
-	hitTexture->LoadFromFile("Images/small_koopa_hit.png");
+	walkAnimation = new Animation(renderer, "Images/walk_koopa", 2, 0.2f);
+	hitAnimation = new Animation(renderer, "Images/hit_koopa", 1, 1.0f);
+
+	currentAnimation = walkAnimation;
 
 	type = ENTITY_TYPE::ENTITY_KOOPA;
 }
@@ -43,7 +44,7 @@ void Entity_Koopa::Die() {
 
 		if (!isHit) {
 			isHit = true;
-			texture = hitTexture;
+			currentAnimation = hitAnimation;
 			isMovingLeft = false;
 			isMovingRight = false;
 			velocity.x = 0;

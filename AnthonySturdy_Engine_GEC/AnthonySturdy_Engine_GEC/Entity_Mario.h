@@ -8,4 +8,9 @@ public:
 
 	void Update(float deltaTime, SDL_Event e);
 
+private:
+	Animation* idleAnimation;
+	Animation* jumpAnimation;
+	Animation* runAnimation;
+
 };

@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "Texture2D.h"
+#include "Animation.h"
 
 #include <string>
 #include <iostream>
@@ -11,9 +12,11 @@
 class Entity {
 protected:
 	SDL_Renderer* mRenderer;
-	Texture2D* texture;
+	Animation* currentAnimation;
 	bool flipSprite = false;
 	Rect2D collisionRect;
+
+	Texture2D* texture;	//Used for w/h only
 
 	bool isDead;
 
@@ -46,7 +49,7 @@ public:
 
 	bool GetIsJumping() { return isJumping; }
 	Vector2D GetPosition() { return position; }
-	void RefreshCollisionRect() { collisionRect = Rect2D(position.x, position.y, texture->GetWidth(), texture->GetHeight()); }
+	void RefreshCollisionRect() { collisionRect = Rect2D(position.x, position.y, currentAnimation->GetFrame(0)->GetWidth(), currentAnimation->GetFrame(0)->GetHeight()); }
 	Rect2D GetCollisionRect() { return collisionRect; }
 	void SetCollidingEntity(Entity* e) { collidingEntity = e; }
 	bool GetIsDead() { return isDead; }
