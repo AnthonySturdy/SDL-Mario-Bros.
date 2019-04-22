@@ -11,7 +11,9 @@ Entity_Mario::Entity_Mario(SDL_Renderer* renderer, Vector2D startPosition, std::
 }
 
 Entity_Mario::~Entity_Mario() {
-
+	delete idleAnimation;
+	delete jumpAnimation;
+	delete runAnimation;
 }
 
 void Entity_Mario::Update(float deltaTime, SDL_Event e) {

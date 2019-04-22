@@ -12,7 +12,8 @@ Entity_Koopa::Entity_Koopa(SDL_Renderer* renderer, Vector2D startPosition, std::
 }
 
 Entity_Koopa::~Entity_Koopa() {
-
+	delete walkAnimation;
+	delete hitAnimation;
 }
 
 void Entity_Koopa::Update(float deltaTime, SDL_Event e) {

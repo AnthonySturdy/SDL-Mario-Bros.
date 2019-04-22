@@ -8,7 +8,24 @@ GameScreen_CustomLevel::GameScreen_CustomLevel(SDL_Renderer* renderer, int _mapS
 }
 
 GameScreen_CustomLevel::~GameScreen_CustomLevel() {
+	delete texture_tileset;
 
+	for (int i = 0; i < tileset.size(); i++) {
+		delete tileset[i];
+	}
+	tileset.clear();
+
+	for (int i = 0; i < levelTiles.size(); i++) {
+		delete levelTiles[i];
+	}
+	levelTiles.clear();
+
+	for (int i = 0; i < entities.size(); i++) {
+		delete entities[i];
+	}
+	entities.clear();
+	playerEntity = nullptr;
+	playerCollidingEntity = nullptr;
 }
 
 void GameScreen_CustomLevel::SetUpLevel() {
@@ -327,6 +344,12 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 
 	case SPRITE_ENTITY_KOOPA: {
 		Entity* e = new Entity_Koopa(mRenderer, Vector2D(x, y - 16), "Images/walk_koopa/0.png", 60, 999, 999);
+		entities.push_back(e);
+	}
+	break;
+
+	case SPRITE_ENTITY_FLAG_LEVEL_END: {
+		Entity* e = new Entity_LevelEnd(mRenderer, Vector2D(x - 16, y - 160), "Images/level_end/0.png", 0, 0, 0);
 		entities.push_back(e);
 	}
 	break;

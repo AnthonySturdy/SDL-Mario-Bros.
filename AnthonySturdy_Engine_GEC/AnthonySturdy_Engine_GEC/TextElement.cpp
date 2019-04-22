@@ -8,7 +8,7 @@ TextElement::TextElement(std::string _text, Texture2D* _fontTexture, Rect2D _pos
 }
 
 TextElement::~TextElement() {
-
+	delete fontTexture;
 }
 
 void TextElement::Render() {

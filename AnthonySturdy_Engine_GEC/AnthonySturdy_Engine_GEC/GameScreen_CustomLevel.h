@@ -7,6 +7,7 @@
 #include "Entity_Mario.h"
 #include "Entity_Goomba.h"
 #include "Entity_Koopa.h"
+#include "Entity_LevelEnd.h"
 #include "Commons.h"
 
 #include <vector>

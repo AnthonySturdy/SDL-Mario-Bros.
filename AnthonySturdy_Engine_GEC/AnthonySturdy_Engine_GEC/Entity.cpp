@@ -16,86 +16,89 @@ Entity::Entity(SDL_Renderer* renderer, Vector2D startPosition, std::string textu
 }
 
 Entity::~Entity() {
-
+	delete texture;
+	delete currentAnimation;
 }
 
 void Entity::Update(float deltaTime, SDL_Event e) {
-	//Movement
-	if (isMovingLeft) {
-		velocity.x -= accelerationSpeed;
+	if (isMoveable) {
+		//Movement
+		if (isMovingLeft) {
+			velocity.x -= accelerationSpeed;
 
-		//Limit velocity to movementSpeed
-		if (abs(velocity.x) > movementSpeed) {
-			velocity.x = -movementSpeed;
+			//Limit velocity to movementSpeed
+			if (abs(velocity.x) > movementSpeed) {
+				velocity.x = -movementSpeed;
+			}
+
+			//Quickly switch direction
+			if (velocity.x > 0) {
+				velocity.x += -decelerationSpeed;
+			}
+
+		} else if (isMovingRight) {
+			velocity.x += accelerationSpeed;
+
+			//Limit velocity to movementSpeed
+			if (abs(velocity.x) > movementSpeed) {
+				velocity.x = movementSpeed;
+			}
+
+			//Quickly switch direction
+			if (velocity.x < 0) {
+				velocity.x += decelerationSpeed;
+			}
+
+		} else {
+			//Apply deceleration (or friction)
+			if (velocity.x > 10.0f || velocity.x < -10.0f)
+				velocity.x += (velocity.x > 0 ? -decelerationSpeed : decelerationSpeed);
+			else
+				velocity.x = 0;	//Snap velocity to 0 if gets too small
 		}
 
-		//Quickly switch direction
-		if (velocity.x > 0) {
-			velocity.x += -decelerationSpeed;
+		//If falling, fall faster
+		if (velocity.y > 0 && isJumping == true) {
+			velocity.y -= GRAVITY_SPEED * gravityMultiplier;
 		}
 
-	} else if (isMovingRight) {
-		velocity.x += accelerationSpeed;
+		//Collision
+		if (isCollidingDown) {
+			//If is going down (So not jumping)
+			if (velocity.y > 0) {
+				velocity.y = 0;
+				isJumping = false;
+				position.y -= (int)position.y % TILE_SIZE;
+			}
 
-		//Limit velocity to movementSpeed
-		if (abs(velocity.x) > movementSpeed) {
-			velocity.x = movementSpeed;
+		} else {
+			//If not colliding below, apply gravity
+			velocity.y -= GRAVITY_SPEED;
+			isJumping = true;
+		}
+		if (isCollidingUp) {
+			//If is going up (Jumping)
+			if (velocity.y < 0) {
+				velocity.y = 0;
+			}
 		}
 
-		//Quickly switch direction
-		if (velocity.x < 0) {
-			velocity.x += decelerationSpeed;
+		if (isCollidingLeft) {
+			//If is going left (toward wall)
+			if (velocity.x <= 0 && collideLeftRect.y != collideDownRect.y) {
+				velocity.x = 0;
+			}
+		}
+		if (isCollidingRight) {
+			//If is going left (toward wall)
+			if (velocity.x >= 0 && collideRightRect.y != collideDownRect.y) {
+				velocity.x = 0;
+			}
 		}
 
-	} else {
-		//Apply deceleration (or friction)
-		if (velocity.x > 10.0f || velocity.x < -10.0f)
-			velocity.x += (velocity.x > 0 ? -decelerationSpeed : decelerationSpeed);
-		else
-			velocity.x = 0;	//Snap velocity to 0 if gets too small
+		position.x += velocity.x * deltaTime;
+		position.y += velocity.y * deltaTime;
 	}
-
-	//If falling, fall faster
-	if (velocity.y > 0 && isJumping == true) {
-		velocity.y -= GRAVITY_SPEED * gravityMultiplier;
-	} 
-
-	//Collision
-	if (isCollidingDown) {
-		//If is going down (So not jumping)
-		if (velocity.y > 0) {
-			velocity.y = 0;
-			isJumping = false;
-			position.y -= (int)position.y % TILE_SIZE;
-		} 
-
-	} else {
-		//If not colliding below, apply gravity
-		velocity.y -= GRAVITY_SPEED;
-		isJumping = true;
-	}
-	if (isCollidingUp) {
-		//If is going up (Jumping)
-		if (velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-
-	if (isCollidingLeft) {
-		//If is going left (toward wall)
-		if (velocity.x <= 0 && collideLeftRect.y != collideDownRect.y) {
-			velocity.x = 0;
-		}
-	}
-	if (isCollidingRight) {
-		//If is going left (toward wall)
-		if (velocity.x >= 0 && collideRightRect.y != collideDownRect.y) {
-			velocity.x = 0;
-		}
-	}
-
-	position.x += velocity.x * deltaTime;
-	position.y += velocity.y * deltaTime;
 
 	//After everything, set collisions to false (if still colliding, will be set to true before this is called)
 	isCollidingDown = isCollidingUp = isCollidingLeft = isCollidingRight = false;

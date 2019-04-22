@@ -23,6 +23,7 @@ protected:
 	Vector2D position;
 	Vector2D velocity;
 	float accelerationSpeed, decelerationSpeed;
+	bool isMoveable = true;
 	bool isMovingLeft;
 	bool isMovingRight;
 	float movementSpeed;
