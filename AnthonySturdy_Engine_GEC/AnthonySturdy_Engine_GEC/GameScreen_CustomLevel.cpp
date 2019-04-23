@@ -112,7 +112,6 @@ void GameScreen_CustomLevel::Render() {
 		}
 
 
-
 		SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
 
 	}
@@ -120,6 +119,8 @@ void GameScreen_CustomLevel::Render() {
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
+	std::cout << "FPS: " << 1 / deltaTime << std::endl;
+
 	//Input
 	switch (e.type) {
 	//Key Down Events
@@ -127,7 +128,7 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_UP:
 			if (!playerEntity->GetIsJumping())
-				playerEntity->Jump(425);
+				playerEntity->Jump(300);
 			break;
 		case SDLK_LEFT:
 			playerEntity->SetMoveLeft(true);

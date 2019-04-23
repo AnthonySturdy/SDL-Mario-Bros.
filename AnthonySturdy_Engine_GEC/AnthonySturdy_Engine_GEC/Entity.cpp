@@ -22,6 +22,9 @@ Entity::~Entity() {
 
 void Entity::Update(float deltaTime, SDL_Event e) {
 	if (isMoveable) {
+		if (position.y > SCREEN_HEIGHT)
+			Die();
+
 		//Movement
 		if (isMovingLeft) {
 			velocity.x -= accelerationSpeed;

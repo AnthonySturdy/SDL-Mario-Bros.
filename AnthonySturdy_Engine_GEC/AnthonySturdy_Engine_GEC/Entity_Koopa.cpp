@@ -17,11 +17,11 @@ Entity_Koopa::~Entity_Koopa() {
 }
 
 void Entity_Koopa::Update(float deltaTime, SDL_Event e) {
-	if (isCollidingLeft) {
+	if (isCollidingLeft && collidingEntity == nullptr) {
 		isMovingLeft = false;
 		isMovingRight = true;
 
-	} else if (isCollidingRight) {
+	} else if (isCollidingRight && collidingEntity == nullptr) {
 		isMovingLeft = true;
 		isMovingRight = false;
 	}
@@ -29,7 +29,7 @@ void Entity_Koopa::Update(float deltaTime, SDL_Event e) {
 	//If colliding with entity
 	if (collidingEntity != nullptr) {
 		//If colliding but not up
-		if (!isCollidingUp && collidingEntity->type == ENTITY_TYPE::ENTITY_MARIO) {
+		if (!isCollidingUp) {
 			collidingEntity->Die();
 		}
 	}
@@ -40,6 +40,9 @@ void Entity_Koopa::Update(float deltaTime, SDL_Event e) {
 }
 
 void Entity_Koopa::Die() {
+	if (position.y > SCREEN_HEIGHT)
+		isDead = true;
+
 	if (hitFrameDelay > 6) {
 		hitFrameDelay = 0;
 
