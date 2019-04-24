@@ -8,11 +8,14 @@
 #include "Entity_Goomba.h"
 #include "Entity_Koopa.h"
 #include "Entity_LevelEnd.h"
+#include "Entity_Coin.h"
 #include "Commons.h"
+#include "TextElement.h"
 
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 class GameScreen_CustomLevel : public GameScreen {
 public:
@@ -27,6 +30,10 @@ private:
 
 	bool debugDraw = false;
 	int halfScreen = SCREEN_WIDTH / 2;
+
+	int score = 0;
+	TextElement* scoreText;
+	Texture2D* fontTexture;
 
 	//Map
 	int mapSizeX, mapSizeY;

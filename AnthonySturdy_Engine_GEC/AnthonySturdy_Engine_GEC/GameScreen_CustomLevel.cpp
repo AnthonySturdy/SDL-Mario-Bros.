@@ -55,6 +55,9 @@ void GameScreen_CustomLevel::SetUpLevel() {
 		}
 	}
 
+	fontTexture = new Texture2D(mRenderer);
+	fontTexture->LoadFromFile("Images/UI_Font_Sprite.png");
+	scoreText = new TextElement("Score: 0", fontTexture, Rect2D(50, 50), mRenderer);
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -92,6 +95,8 @@ void GameScreen_CustomLevel::Render() {
 		}
 	}
 
+	scoreText->Render();
+
 
 	if (debugDraw) {
 		//Render collision check tiles
@@ -126,7 +131,7 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_UP:
 			if (!playerEntity->GetIsJumping())
-				playerEntity->Jump(300);
+				playerEntity->Jump(310);
 			break;
 		case SDLK_LEFT:
 			playerEntity->SetMoveLeft(true);
@@ -219,13 +224,21 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 		if (entities[i]->GetIsDead()) {
 			if (entities[i]->type == ENTITY_TYPE::ENTITY_MARIO) {
 				manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
+				return;
 			} else {
+				if (entities[i]->type == ENTITY_TYPE::ENTITY_COIN) 
+					score++;
+
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);
 			}
 		}
 	}
+
+	std::stringstream ss;
+	ss << "Score- " << score;
+	scoreText->text = ss.str();
 }
 
 bool GameScreen_CustomLevel::ReadMapFromFile(const char* filePath) {
@@ -370,6 +383,12 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 
 	case SPRITE_ENTITY_FLAG_LEVEL_END: {
 		Entity* e = new Entity_LevelEnd(mRenderer, Vector2D(x - 16, y - 160), "Images/level_end/0.png", 0, 0, 0);
+		entities.push_back(e);
+	}
+	break;
+
+	case SPRITE_ENTITY_COIN: {
+		Entity* e = new Entity_Coin(mRenderer, Vector2D(x, y), "Images/idle_coin/0.png", 0, 0, 0);
 		entities.push_back(e);
 	}
 	break;

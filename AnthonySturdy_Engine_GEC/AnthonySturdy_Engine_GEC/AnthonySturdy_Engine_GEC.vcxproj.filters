@@ -84,6 +84,9 @@
     <ClCompile Include="Entity_LevelEnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entity_Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib" />
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Entity_LevelEnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity_Coin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
