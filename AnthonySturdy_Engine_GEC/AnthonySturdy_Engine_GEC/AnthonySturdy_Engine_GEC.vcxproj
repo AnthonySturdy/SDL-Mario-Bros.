@@ -145,6 +145,7 @@
     <ClCompile Include="GameScreen_MainMenu.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="PowBlock.cpp" />
+    <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TextElement.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="GameScreen_MainMenu.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="PowBlock.h" />
+    <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="TextElement.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="UIElement.h" />

@@ -286,6 +286,9 @@ bool GameScreen_LevelEditor::SetUpLevel() {
 	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 58, 92, 7));
 	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 73, 92, 7));
 
+	pauseSound = new SoundEffect("Audio/Super_Mario_Bros/smb_pause.wav");
+	saveSound = new SoundEffect("Audio/Super_Mario_Bros/smb_save.wav");
+
 	return false;
 }
 
@@ -365,6 +368,7 @@ void GameScreen_LevelEditor::Update(float deltaTime, SDL_Event e) {
 				isPaused = false;
 			} else {
 				isPaused = true;
+				pauseSound->Play();
 			}
 			break;
 		}
@@ -539,7 +543,8 @@ bool GameScreen_LevelEditor::PauseMenu(int mouseX, int mouseY) {
 					case 1:
 						//Clicked Save
 						WriteMapToFile("LevelMap.gec");
-						isPaused = true;
+						isPaused = false;
+						saveSound->Play();
 						break;
 					case 2:
 						//Clicked Main Menu

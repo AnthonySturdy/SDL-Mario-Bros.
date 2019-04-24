@@ -10,6 +10,7 @@
 #include "LevelMap.h"
 #include "PowBlock.h"
 #include "Character_Koopa.h"
+#include "SoundEffect.h"
 class Texture2D;
 class Character;
 
@@ -32,6 +33,8 @@ private:
 	Texture2D* mbackgroundTexture;
 	Character* myCharacter;
 	LevelMap* mLevelMap;
+
+	SoundEffect* spawnEnemiesSound;
 
 	std::vector<Character_Koopa*> mEnemies;
 	float mEnemySpawnCountdown = 0;

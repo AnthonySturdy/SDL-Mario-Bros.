@@ -8,4 +8,6 @@ public:
 
 	void Update(float deltaTime, SDL_Event e);
 
+private:
+	SoundEffect* levelFinishSound;
 };

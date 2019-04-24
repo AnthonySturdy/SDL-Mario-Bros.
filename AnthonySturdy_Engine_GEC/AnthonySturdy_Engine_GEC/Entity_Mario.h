@@ -7,10 +7,13 @@ public:
 	~Entity_Mario();
 
 	void Update(float deltaTime, SDL_Event e);
+	void Die();
 
 private:
 	Animation* idleAnimation;
 	Animation* jumpAnimation;
 	Animation* runAnimation;
 
+	SoundEffect* kickSound;
+	SoundEffect* dieSound;
 };

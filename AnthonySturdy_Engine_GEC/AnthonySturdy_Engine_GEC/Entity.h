@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "Animation.h"
+#include "SoundEffect.h"
 
 #include <string>
 #include <iostream>
@@ -53,6 +54,7 @@ public:
 	void RefreshCollisionRect() { collisionRect = Rect2D(position.x, position.y, currentAnimation->GetFrame(0)->GetWidth(), currentAnimation->GetFrame(0)->GetHeight()); }
 	Rect2D GetCollisionRect() { return collisionRect; }
 	void SetCollidingEntity(Entity* e) { collidingEntity = e; }
+	Entity* GetCollidingEntity() { return collidingEntity; }
 	bool GetIsDead() { return isDead; }
 
 	ENTITY_TYPE type = ENTITY_TYPE::ENTITY_DEFAULT;

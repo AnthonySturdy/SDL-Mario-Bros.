@@ -26,6 +26,9 @@ GameScreen_CustomLevel::~GameScreen_CustomLevel() {
 	entities.clear();
 	playerEntity = nullptr;
 	playerCollidingEntity = nullptr;
+
+	delete jumpSound;
+	delete pauseSound;
 }
 
 void GameScreen_CustomLevel::SetUpLevel() {
@@ -58,6 +61,9 @@ void GameScreen_CustomLevel::SetUpLevel() {
 	fontTexture = new Texture2D(mRenderer);
 	fontTexture->LoadFromFile("Images/UI_Font_Sprite.png");
 	scoreText = new TextElement("Score: 0", fontTexture, Rect2D(50, 50), mRenderer);
+
+	jumpSound = new SoundEffect("Audio/Super_Mario_Bros/smb_jump-small.wav");
+	pauseSound = new SoundEffect("Audio/Super_Mario_Bros/smb_pause.wav");
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -130,8 +136,10 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	case SDL_KEYDOWN:
 		switch (e.key.keysym.sym) {
 		case SDLK_UP:
-			if (!playerEntity->GetIsJumping())
+			if (!playerEntity->GetIsJumping()) {
 				playerEntity->Jump(310);
+				jumpSound->Play();
+			}
 			break;
 		case SDLK_LEFT:
 			playerEntity->SetMoveLeft(true);
@@ -223,6 +231,9 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i]->GetIsDead()) {
 			if (entities[i]->type == ENTITY_TYPE::ENTITY_MARIO) {
+				manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
+				return;
+			} else if (entities[i]->type == ENTITY_TYPE::ENTITY_LEVELEND) {
 				manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
 				return;
 			} else {

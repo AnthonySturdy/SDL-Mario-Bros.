@@ -1,12 +1,12 @@
 #include "Character_Mario.h"
 
 Character_Mario::Character_Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map) : Character(renderer, imagePath, startPosition, map, MOVEMENT_SPEED) {
+	jumpSound = new SoundEffect("Audio/Mario_Bros/mb_jump.wav");
 
 }
 
-
 Character_Mario::~Character_Mario() {
-
+	delete jumpSound;
 }
 
 void Character_Mario::Update(float deltaTime, SDL_Event e) {
@@ -26,8 +26,10 @@ void Character_Mario::Update(float deltaTime, SDL_Event e) {
 			mMovingLeft = false;
 			break;
 		case SDLK_UP:
-			if (mCanJump)
+			if (mCanJump) {
 				Jump();
+				jumpSound->Play();
+			}
 			break;
 		}
 		break;

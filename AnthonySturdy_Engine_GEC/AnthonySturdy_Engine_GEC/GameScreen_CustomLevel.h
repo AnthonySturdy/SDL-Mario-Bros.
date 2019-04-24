@@ -11,6 +11,7 @@
 #include "Entity_Coin.h"
 #include "Commons.h"
 #include "TextElement.h"
+#include "SoundEffect.h"
 
 #include <vector>
 #include <fstream>
@@ -34,6 +35,10 @@ private:
 	int score = 0;
 	TextElement* scoreText;
 	Texture2D* fontTexture;
+
+	//Sounds
+	SoundEffect* jumpSound;
+	SoundEffect* pauseSound;
 
 	//Map
 	int mapSizeX, mapSizeY;

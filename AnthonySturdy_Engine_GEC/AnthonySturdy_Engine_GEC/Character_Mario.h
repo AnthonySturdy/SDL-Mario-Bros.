@@ -1,5 +1,6 @@
 #pragma once
 #include "Character.h"
+#include "SoundEffect.h"
 
 class Character_Mario : public Character {
 public:
@@ -7,4 +8,7 @@ public:
 	~Character_Mario();
 
 	void Update(float deltaTime, SDL_Event e);
+
+private:
+	SoundEffect* jumpSound;
 };

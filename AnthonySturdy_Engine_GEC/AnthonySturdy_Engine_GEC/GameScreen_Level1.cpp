@@ -23,6 +23,8 @@ GameScreen_Level1::~GameScreen_Level1() {
 	mLevelMap = NULL;
 
 	mEnemies.clear();
+
+	delete spawnEnemiesSound;
 }
 
 void GameScreen_Level1::DoScreenshake() {
@@ -52,6 +54,8 @@ bool GameScreen_Level1::SetUpLevel() {
 	mPowBlock = new PowBlock(mRenderer, mLevelMap);
 	mScreenshake = false;
 	mBackgroundYPos = 0.0f;
+
+	spawnEnemiesSound = new SoundEffect("Audio/Mario_Bros/mb_sc.wav");
 
 	return true;
 }
@@ -112,6 +116,8 @@ void GameScreen_Level1::Update(float deltaTime, SDL_Event e) {
 	if (mEnemySpawnCountdown <= 0) {
 		CreateKoopa(Vector2D(150, 32), FACING_RIGHT, KOOPA_SPEED);
 		CreateKoopa(Vector2D(325, 32), FACING_LEFT, KOOPA_SPEED);
+
+		spawnEnemiesSound->Play();
 
 		mEnemySpawnCountdown = KOOPA_SPAWN_DELAY;
 	}

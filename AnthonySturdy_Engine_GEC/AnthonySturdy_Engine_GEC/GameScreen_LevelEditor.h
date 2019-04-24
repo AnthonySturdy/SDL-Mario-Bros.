@@ -7,6 +7,7 @@
 #include "Texture2D.h"
 #include "UIElement.h"
 #include "TextElement.h"
+#include "SoundEffect.h"
 
 #include <vector>
 #include <iostream>
@@ -75,4 +76,7 @@ private:
 	UIElement* uiPauseMenu;
 	UIElement* uiCurrentPauseMenuSelection;
 	std::vector<Rect2D> uiPauseMenuButtonRects;
+
+	SoundEffect* pauseSound;
+	SoundEffect* saveSound;
 };
