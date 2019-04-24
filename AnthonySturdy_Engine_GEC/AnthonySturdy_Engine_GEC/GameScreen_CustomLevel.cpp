@@ -119,8 +119,6 @@ void GameScreen_CustomLevel::Render() {
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
-	std::cout << "FPS: " << 1 / deltaTime << std::endl;
-
 	//Input
 	switch (e.type) {
 	//Key Down Events
@@ -162,10 +160,21 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	//Start Collision
 	//Refresh entities collision rects (before we check for collision)
 	for (int j = 0; j < entities.size(); j++) {
+		int dist = entities[j]->GetPosition().x - playerEntity->GetPosition().x;
+		if (dist >= SCREEN_WIDTH / 2 + 48) {
+			continue;
+		}
+
 		entities[j]->RefreshCollisionRect();
 	}
 	//Check entity on tile collision
 	for (int j = 0; j < entities.size(); j++) {
+
+		int dist = entities[j]->GetPosition().x - playerEntity->GetPosition().x;
+		if (dist >= SCREEN_WIDTH / 2 + 48) {
+			continue;
+		}
+
 		//Check collision only on surrounding tiles, checking all tiles drops fps dramastically
 		std::vector<LevelTile*> surroundingTiles = GetSurroundTiles(floor((entities[j]->GetCollisionRect().x) / TILE_SIZE),
 																	floor((entities[j]->GetCollisionRect().y - (SCREEN_HEIGHT - (mapSizeY * TILE_SIZE))) / TILE_SIZE));
@@ -178,6 +187,11 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 	}
 	//Check entity on entity collision
 	for (int i = 0; i < entities.size(); i++) {
+		int dist = entities[i]->GetPosition().x - playerEntity->GetPosition().x;
+		if (dist >= SCREEN_WIDTH / 2 + 48) {
+			continue;
+		}
+
 		for (int j = 0; j < entities.size(); j++) {
 			//Don't check collision on itself
 			if (entities[i] != entities[j]) {
@@ -192,6 +206,11 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 
 	//Call entities Update()
 	for (int j = 0; j < entities.size(); j++) {
+		int dist = entities[j]->GetPosition().x - playerEntity->GetPosition().x;
+		if (dist >= SCREEN_WIDTH / 2 + 48) {
+			continue;
+		}
+
 		entities[j]->Update(deltaTime, e);
 	}
 
