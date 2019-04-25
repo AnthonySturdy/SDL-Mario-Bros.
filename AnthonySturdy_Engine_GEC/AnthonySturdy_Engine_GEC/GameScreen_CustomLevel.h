@@ -12,6 +12,7 @@
 #include "Commons.h"
 #include "TextElement.h"
 #include "SoundEffect.h"
+#include "UIElement.h"
 
 #include <vector>
 #include <fstream>
@@ -31,6 +32,14 @@ private:
 
 	bool debugDraw = false;
 	int halfScreen = SCREEN_WIDTH / 2;
+	
+	bool isPaused = false;
+	bool PauseMenu();
+	Texture2D* pauseMenuTexture;
+	Texture2D* currentPauseMenuSelectionTexture;
+	UIElement* uiPauseMenu;
+	UIElement* uiCurrentPauseMenuSelection;
+	std::vector<Rect2D> uiPauseMenuButtonRects;
 
 	int score = 0;
 	TextElement* scoreText;

@@ -8,10 +8,6 @@
 #include"Texture2D.h"
 #include"GameScreenManager.h"
 
-//TODO: Player Death (Need to add it in the main level too)
-//		SoundEffect class (Tutorial 12 additional work)
-//		Additional work tutorial 11 - Section 3 onwards
-
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 GameScreenManager* gameScreenManager;
@@ -35,7 +31,7 @@ int main(int argc, char* args[]) {
 
 		gOldTime = SDL_GetTicks();
 
-		LoadMusic("Music/Mario.mp3");
+		LoadMusic("Music/ThemeSong.wav");
 		if (Mix_PlayingMusic() == 0) {
 			Mix_PlayMusic(gMusic, -1);
 		}

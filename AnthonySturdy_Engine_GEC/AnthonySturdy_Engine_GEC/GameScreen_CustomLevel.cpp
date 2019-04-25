@@ -29,6 +29,15 @@ GameScreen_CustomLevel::~GameScreen_CustomLevel() {
 
 	delete jumpSound;
 	delete pauseSound;
+
+	delete fontTexture;
+	delete scoreText;
+
+	delete pauseMenuTexture;
+	delete currentPauseMenuSelectionTexture;
+	delete uiPauseMenu;
+	delete uiCurrentPauseMenuSelection;
+
 }
 
 void GameScreen_CustomLevel::SetUpLevel() {
@@ -64,6 +73,49 @@ void GameScreen_CustomLevel::SetUpLevel() {
 
 	jumpSound = new SoundEffect("Audio/Super_Mario_Bros/smb_jump-small.wav");
 	pauseSound = new SoundEffect("Audio/Super_Mario_Bros/smb_pause.wav");
+
+	pauseMenuTexture = new Texture2D(mRenderer);
+	pauseMenuTexture->LoadFromFile("Images/UI_Pause1.png");
+	currentPauseMenuSelectionTexture = new Texture2D(mRenderer);
+	currentPauseMenuSelectionTexture->LoadFromFile("Images/UI_Pause_Cursor.png");
+	uiPauseMenu = new UIElement(pauseMenuTexture, Rect2D((SCREEN_WIDTH / 4) - (pauseMenuTexture->GetWidth() / 2), (SCREEN_HEIGHT / 4) - (pauseMenuTexture->GetHeight() / 2)), nullptr);
+	uiCurrentPauseMenuSelection = new UIElement(currentPauseMenuSelectionTexture, Rect2D(18, 43), uiPauseMenu);
+	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 43, 92, 7));
+	uiPauseMenuButtonRects.push_back(Rect2D(uiPauseMenu->globalPos.x + 16, uiPauseMenu->globalPos.y + 58, 92, 7));
+}
+
+bool GameScreen_CustomLevel::PauseMenu() {
+	int mouseX, mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);
+	mouseX /= SCREEN_SCALE;
+	mouseY /= SCREEN_SCALE;
+
+	if (isPaused) {
+		for (int i = 0; i < uiPauseMenuButtonRects.size(); i++) {
+			Rect2D r = uiPauseMenuButtonRects[i];
+
+			//If user hovering over sprite
+			if ((mouseX > r.x) && (mouseX < r.x + r.w) && (mouseY > r.y) && (mouseY < r.y + r.h)) {
+				uiCurrentPauseMenuSelection->globalPos.y = r.y;
+
+				if (SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)) {
+					switch (i) {
+					case 0:
+						// Clicked Resume
+						isPaused = false;
+						break;
+					case 1:
+						//Clicked Main Menu
+						manager->ChangeScreen(SCREENS::SCREEN_MAIN_MENU);
+						break;
+					}
+				}
+			}
+		}
+
+	}
+
+	return isPaused;
 }
 
 void GameScreen_CustomLevel::Render() {
@@ -103,6 +155,10 @@ void GameScreen_CustomLevel::Render() {
 
 	scoreText->Render();
 
+	if (isPaused) {
+		uiPauseMenu->Render();
+		uiCurrentPauseMenuSelection->Render();
+	}
 
 	if (debugDraw) {
 		//Render collision check tiles
@@ -130,6 +186,9 @@ void GameScreen_CustomLevel::Render() {
 }
 
 void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
+	if (PauseMenu())
+		return;
+
 	//Input
 	switch (e.type) {
 	//Key Down Events
@@ -149,8 +208,15 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 			playerEntity->SetMoveLeft(false);
 			playerEntity->SetMoveRight(true);
 			break;
+		case SDLK_ESCAPE:
+			if (isPaused) {
+				isPaused = false;
+			} else {
+				isPaused = true;
+				pauseSound->Play();
+			}
+			break;
 		}
-	
 		break;
 
 	//Key Up Events
@@ -238,8 +304,9 @@ void GameScreen_CustomLevel::Update(float deltaTime, SDL_Event e) {
 				return;
 			} else {
 				if (entities[i]->type == ENTITY_TYPE::ENTITY_COIN) 
-					score++;
+					score += 100;
 
+				score += 100;
 				delete entities[i];
 				entities[i] = nullptr;
 				entities.erase(entities.begin() + i);
@@ -374,8 +441,6 @@ void GameScreen_CustomLevel::CreateEntity(unsigned short sprite, int x, int y) {
 		entities.push_back(e);
 		if (playerEntity == nullptr) {
 			playerEntity = e;
-		} else {
-			//TODO: Add message to alert player there are 2 player objects in the scene
 		}
 	}
 	break;
