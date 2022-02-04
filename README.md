@@ -3,7 +3,7 @@ This project is a remake of Super Mario Bros. using SDL and C++, with an in-game
 
 The biggest challenge while developing the game, was perfecting the collision system. It took a lot of testing and tweaking so the character wouldn't get stuck in the ground or go through any walls.
 
-![E1M1 Rendered in OpenGL](https://anthonysturdy.co.uk/Images/SDL_Mario_1.png)
+![SDL Mario Bros](https://AnthonySturdy.co.uk/images/projects/SDL_Mario_1.png)
 
 ## Features
 - Character Controller
